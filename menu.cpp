@@ -60,7 +60,7 @@ int menu(SDL_Surface *ecran,SDL_Joystick *joystick)
     // boucle principale du menu (et du programme)
     while (!done)
     {
-        SDL_Delay(5);
+        SDL_EnableKeyRepeat(1000,100);
         SDL_FillRect(ecran, 0, 0xFFFFFF);
 
         textMenu = fopen("textMenu.txt", "rb");

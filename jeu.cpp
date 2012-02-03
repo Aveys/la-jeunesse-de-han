@@ -109,7 +109,7 @@ void jeu(SDL_Surface* screen,Map carteJeu, ParamMap opt,SDL_Joystick *joystick)
     options.afficheGrille = 0;
 
     SDL_EnableKeyRepeat(1,1);
-    int tempsPrecedent = 0, tempsActuel = 0,continuer = 1,decalage = 0,tempsMusique1 = 0,tempsMusique2 = 0;
+    int tempsPrecedent = 0, tempsActuel = 0,continuer = 1,decalage = 0,tempsMusique1 = 0,tempsMusique2 = 0,retour = 0;
     int a_atteri = 1,touche_enfonce = 0;
     int touche_a_ete_enfonce = 0;
     Perso perso1;
@@ -282,6 +282,12 @@ void jeu(SDL_Surface* screen,Map carteJeu, ParamMap opt,SDL_Joystick *joystick)
                 SDL_BlitSurface(perso1.persoSprite, &perso1.posSprite[perso1.frameActu], screen, &perso1.positionP);
                 perso1.positionP.w = perso1.posSprite[perso1.frameActu].w;
                 perso1.positionP.h = perso1.posSprite[perso1.frameActu].h;
+                retour = test_collision(perso1.positionP,&carteJeu,0,0,NULL,&perso1,0);
+                while(retour == MUR_COLLISION)
+                {
+                    perso1.positionP.x -= 2;
+                    retour = test_collision(perso1.positionP,&carteJeu,0,0,NULL,&perso1,0);
+                }
             }
             affiche_laser(mario_tire,&nbr_balle,&carteJeu,screen,&realloc_balle, perso1,&j);    //affichage du blaster
             for(i = 0; i < carteJeu.nb_ennemi; i++)     //deplacement de tout les ennemis
