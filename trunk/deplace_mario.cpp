@@ -322,7 +322,9 @@ void gestion_touche(Perso *perso1, Map *carte, int *continuer,int *a_atteri,int 
 
             }
             else if(event.key.keysym.sym == SDLK_c) //si on relache c alors on arrete le jet pack
+            {
                 *jetPack = 0;
+            }
             break;
         case SDL_JOYAXISMOTION:
             if(SDL_NumJoysticks() > 0)
@@ -592,7 +594,11 @@ int deplace_mario(Perso *perso1,Map *carte,int decalage,SDL_Surface* screen,int 
         }
         else if(retour_test == ATTERI)
         {
-            perso1->positionP.x -= perso1->sensxp;
+            if(*a_atteri != 0)
+            {
+                perso1->positionP.x -= perso1->sensxp;
+                perso1->sensxp = 0;     //on stop le deplacement
+            }
             perso1->positionP.y -= perso1->sensyp;
             perso1->sensyp = 0;
             *a_atteri = 0;
@@ -617,6 +623,11 @@ int deplace_mario(Perso *perso1,Map *carte,int decalage,SDL_Surface* screen,int 
         {
             perso1->positionP.y -= perso1->sensyp;
             perso1->sensyp = 0;
+            if(*a_atteri != 0)
+            {
+                perso1->positionP.x -= perso1->sensxp;
+                perso1->sensxp = 0;     //on stop le deplacement
+            }
             *a_atteri = 0;
         }
     }
@@ -641,6 +652,11 @@ int deplace_mario(Perso *perso1,Map *carte,int decalage,SDL_Surface* screen,int 
     {
         perso1->positionP.y -= perso1->sensyp;
         perso1->sensyp = 0;
+        if(*a_atteri != 0)
+        {
+            perso1->positionP.x -= perso1->sensxp;
+            perso1->sensxp = 0;     //on stop le deplacement
+        }
         *a_atteri = 0;
     }
     else if(retour_test == BONUS)
@@ -726,7 +742,7 @@ void position_perso_tab(SDL_Rect surface_a_tester,int *posxmin,int *posymin,int 
 */
 int test_collision(SDL_Rect surface_a_tester,Map *carte,int opt,int opt2,Joueur *joueur1,Perso *perso1,int no_perso)
 {
-    int posxmin,posymin,posxmax,posymax,i,j;
+    int posxmin,posymin,posxmax,posymax,i,j,tmp = 0;
     //Point p;
     position_perso_tab(surface_a_tester,&posxmin,&posymin,&posxmax,&posymax,*carte,opt2);   //determination des cases a tester
     if(opt == 1)    //si on veut tester si le perso a atteri alors on test que les cases en bas de la surface
@@ -751,7 +767,11 @@ int test_collision(SDL_Rect surface_a_tester,Map *carte,int opt,int opt2,Joueur 
                 {
                 case tileMUR:   //mur
                     if(i == posymax)    //si la case est sur le bas du perso alors il atteri
-                        return ATTERI;
+                    {
+                        tmp = (surface_a_tester.x+surface_a_tester.w+carte->xscroll) - (j-1)*LTILE;
+                        if(no_perso == 0 && tmp > perso1->sensxp && tmp < LTILE-perso1->sensxp+surface_a_tester.w)
+                            return ATTERI;
+                    }
                     return MUR_COLLISION;
                     break;
                 case tileReserve:   //mur destructible
@@ -762,8 +782,12 @@ int test_collision(SDL_Rect surface_a_tester,Map *carte,int opt,int opt2,Joueur 
                         if(i == posymax)   //sinon comme un mur normal
                             return ATTERI;
                     }
-                    else if(i == posymax)   //sinon comme un mur normal
-                        return ATTERI;
+                    else if(i == posymax)    //si la case est sur le bas du perso alors il atteri
+                    {
+                        tmp = (surface_a_tester.x+surface_a_tester.w+carte->xscroll) - (j-1)*LTILE;
+                        if(no_perso == 0 && tmp > perso1->sensxp && tmp < LTILE-perso1->sensxp+surface_a_tester.w)
+                            return ATTERI;
+                    }
                     return MUR_COLLISION;
                     break;
                 case tileSOL:   //si le perso est en bas de la map
@@ -777,8 +801,12 @@ int test_collision(SDL_Rect surface_a_tester,Map *carte,int opt,int opt2,Joueur 
                         carte->tableauMap[i-1][j-1] = 0;    //suppression de la case
                         return BONUS;
                     }
-                    else if(i == posymax)   //sinon comme un mur normal
-                        return ATTERI;
+                    else if(i == posymax)    //si la case est sur le bas du perso alors il atteri
+                    {
+                        tmp = (surface_a_tester.x+surface_a_tester.w+carte->xscroll) - (j-1)*LTILE;
+                        if(no_perso == 0 && tmp > perso1->sensxp && tmp < LTILE-perso1->sensxp+surface_a_tester.w)
+                            return ATTERI;
+                    }
                     return MUR_COLLISION;
                     break;
                 case tileFIN:     //fin lvl

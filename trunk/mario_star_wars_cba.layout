@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
-	<ActiveTarget name="Debug" />
+	<ActiveTarget name="Release" />
 	<File name="constantes.h" open="1" top="0" tabpos="1">
 		<Cursor position="1735" topLine="50" />
 	</File>
@@ -28,7 +28,7 @@
 	<File name="ennemie.h" open="1" top="0" tabpos="12">
 		<Cursor position="121" topLine="0" />
 	</File>
-	<File name="highscore.cpp" open="1" top="1" tabpos="19">
+	<File name="highscore.cpp" open="1" top="0" tabpos="19">
 		<Cursor position="304" topLine="3" />
 	</File>
 	<File name="highscore.h" open="1" top="0" tabpos="9">
@@ -37,8 +37,8 @@
 	<File name="jeu.cpp" open="1" top="0" tabpos="4">
 		<Cursor position="3003" topLine="67" />
 	</File>
-	<File name="main.cpp" open="1" top="0" tabpos="3">
-		<Cursor position="918" topLine="17" />
+	<File name="main.cpp" open="1" top="1" tabpos="3">
+		<Cursor position="918" topLine="79" />
 	</File>
 	<File name="map.cpp" open="1" top="0" tabpos="13">
 		<Cursor position="4600" topLine="102" />
@@ -47,7 +47,7 @@
 		<Cursor position="486" topLine="0" />
 	</File>
 	<File name="menu.cpp" open="1" top="0" tabpos="5">
-		<Cursor position="1074" topLine="23" />
+		<Cursor position="1634" topLine="47" />
 	</File>
 	<File name="menu.h" open="1" top="0" tabpos="15">
 		<Cursor position="2514" topLine="32" />
