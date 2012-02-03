@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="mario_star_wars_cba" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin\Debug\mario_star_wars_cba" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj\Debug\" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+				<Linker>
+					<Add library="C:\Program Files (x86)\CodeBlocks\SDL-1.2.14\lib\SDL_ttf.lib" />
+					<Add library="C:\Program Files (x86)\CodeBlocks\SDL-1.2.14\lib\SDL_image.lib" />
+				</Linker>
+			</Target>
+			<Target title="Release">
+				<Option output="bin\Release\mario_star_wars_cba" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj\Release\" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add directory="C:\Program Files (x86)\CodeBlocks\SDL-1.2.14\include" />
+		</Compiler>
+		<Linker>
+			<Add library="mingw32" />
+			<Add library="SDLmain" />
+			<Add library="SDL.dll" />
+			<Add library="user32" />
+			<Add library="gdi32" />
+			<Add library="winmm" />
+			<Add library="dxguid" />
+			<Add library="C:\Program Files (x86)\CodeBlocks\SDL-1.2.14\lib\SDL_image.lib" />
+			<Add library="C:\Program Files (x86)\CodeBlocks\SDL-1.2.14\lib\SDL_ttf.lib" />
+			<Add library="C:\Program Files (x86)\CodeBlocks\MinGW\lib\libfmodex.a" />
+			<Add directory="C:\Program Files (x86)\CodeBlocks\SDL-1.2.14\lib" />
+		</Linker>
+		<Unit filename="calibri.ttf" />
+		<Unit filename="config.txt" />
+		<Unit filename="constantes.h" />
+		<Unit filename="credits.cpp" />
+		<Unit filename="credits.h" />
+		<Unit filename="deplace_mario.cpp" />
+		<Unit filename="deplace_mario.h" />
+		<Unit filename="editeur.cpp" />
+		<Unit filename="editeur.h" />
+		<Unit filename="ennemie.cpp" />
+		<Unit filename="ennemie.h" />
+		<Unit filename="highscore.cpp" />
+		<Unit filename="highscore.h" />
+		<Unit filename="jeu.cpp" />
+		<Unit filename="jeu.h" />
+		<Unit filename="lvl.txt" />
+		<Unit filename="main.cpp" />
+		<Unit filename="map.cpp" />
+		<Unit filename="map.h" />
+		<Unit filename="menu.cpp" />
+		<Unit filename="menu.h" />
+		<Unit filename="reglages.cpp" />
+		<Unit filename="reglages.h" />
+		<Unit filename="textMenu.txt" />
+		<Extensions>
+			<code_completion />
+			<debugger />
+			<envvars />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

@@ -1,0 +1,227 @@
+//MatHack
+
+#include <stdlib.h>
+#include <stdio.h>
+#include <math.h>
+#include <SDL/SDL.h>
+#include <SDL/SDL_image.h>
+//#include <FMOD/fmod.h>
+
+
+
+int main ( int argc, char** argv )
+{
+    //Init de la SDL
+    SDL_Init( SDL_INIT_VIDEO );
+
+
+    //Gestion du son
+   // FMOD_SYSTEM *system;
+    //FMOD_SOUND *jump = NULL, *sound = NULL;
+
+
+    //FMOD_System_Create(&system);
+    //FMOD_System_Init(system, 32, FMOD_INIT_NORMAL, NULL);
+
+
+   // FMOD_System_CreateSound(system, "Mario_Sounds/Mario Jump.wav", FMOD_CREATESAMPLE, NULL, &jump);
+    //FMOD_System_CreateSound(system, "Mario_Sounds/Win Stage.wav", FMOD_SOFTWARE|FMOD_2D|FMOD_CREATESTREAM, 0, &sound);
+
+   // FMOD_CHANNEL *channel;
+    //FMOD_System_GetChannel(system, 9, &channel);
+    //FMOD_Sound_SetLoopCount(sound, -1);
+
+
+    // On crée une fenêtre
+    SDL_Surface* ecran = SDL_SetVideoMode(640, 480, 32, SDL_HWSURFACE|SDL_DOUBLEBUF);
+     SDL_Rect positionSol;
+    // On charge le fond
+    int regardDroit = 1, regardGauche = 0;
+        //On charge Mario
+    SDL_Surface* mario = IMG_Load("mario_droite.gif");
+
+    SDL_Rect posPlayer;
+    posPlayer.x = 100;
+    posPlayer.y = 300;
+ positionSol.x = 0;
+    positionSol.y = 415;
+
+    // La position absolue de Mario
+    SDL_Rect posMarioAbs;
+    posMarioAbs.x = 200;
+    posMarioAbs.y = positionSol.y-(mario->h);
+
+    // La position relative de Mario
+    SDL_Rect posMarioRel;
+    posMarioRel.x = 0;
+    posMarioRel.y = 0;
+    int enCour = 0;
+
+
+
+    SDL_Surface *sol = NULL;
+    sol = SDL_CreateRGBSurface(SDL_HWSURFACE, ecran->w, 65, 32, 0, 0, 0, 0); //Allocation en memoire GPU
+    Uint32 solCouleur = SDL_MapRGB(ecran->format, 203, 79, 15);
+    SDL_FillRect(sol, NULL, solCouleur);
+
+
+    //Saut loi newton
+    const double g = 9.81;
+    const double pi = 3.14;
+    int v_init = 2;
+    int angle_init = pi/3;
+    int t = 0;
+    double v_x = cos(angle_init)*v_init;
+    double v_y = sin(angle_init)*v_init;
+    int saut = 0;
+
+    int fin = 0;
+    int sens = 2;
+    int son = 1;
+char str[100];
+    SDL_EnableKeyRepeat(10 ,10);
+    //FMOD_Sound_SetLoopCount(sound, -1);
+    //FMOD_System_PlaySound(system, FMOD_CHANNEL_FREE, sound, 0, NULL);
+    while (!fin)
+    {
+
+        sprintf(str, "Sens : %d", sens );
+            SDL_WM_SetCaption(str, NULL);
+        // Gestion des evenements
+        SDL_Event event;
+        while (SDL_PollEvent(&event))
+        {
+            switch (event.type)
+            {
+                case SDL_QUIT:
+                    fin = 1;
+                    break;
+
+                case SDL_KEYDOWN:
+                {
+                    // ECHAP
+                    switch(event.key.keysym.sym)
+                    {
+                       case SDLK_SPACE:
+                            if(saut == 1 && enCour == 0)
+                            {
+                                saut = 0;
+                            }
+                            else
+                            {
+                                saut = 1;
+
+                            }
+
+                        break;
+                        case SDLK_LEFT:
+                            if(enCour == 0)
+                            {
+                                posPlayer.x -= v_init*2;
+                                sens = 1;
+                            }
+
+                        break;
+                        case SDLK_RIGHT:
+                            if(enCour == 0)
+                            {
+                                posPlayer.x += v_init*2;
+                                sens = 0;
+                            }
+
+                        break;
+                    }
+                    break;
+
+                }
+            }
+        }
+
+
+
+        // EVOLUTION
+        if(saut == 1)
+        {
+            if(son==1)
+            {
+               // FMOD_System_PlaySound(system, FMOD_CHANNEL_FREE, jump, 0, NULL);
+                son = 0;
+            }
+
+
+            enCour = 1;
+            //On met à "0" les pos abs:
+            posMarioAbs.x = posPlayer.x;
+            posMarioAbs.y = posPlayer.y-(mario->h);
+
+            //On calcule la valeur relative de y:
+            posMarioRel.x=(int)(v_x*t);
+            posMarioRel.y=(int)((v_y*t)-((g*t*t)/1000));
+
+            //On calcule maintenant les valeurs absolues
+            if(sens == 0)
+                posMarioAbs.x = posMarioAbs.x + posMarioRel.x;
+            if(sens == 1)
+                posMarioAbs.x = posMarioAbs.x - posMarioRel.x;
+            if(sens == 2);
+
+            posMarioAbs.y = posMarioAbs.y - posMarioRel.y;
+
+//            if(regardGauche == 1 && regardDroit == 0)
+//            {
+//                posMarioAbs.x = posMarioAbs.x - posMarioRel.x;
+//                posMarioAbs.y = posMarioAbs.y - posMarioRel.y;
+//            }
+
+
+            //Intervalle de 20ms
+
+            t+=2;
+
+            if(posMarioAbs.y>=positionSol.y-(mario->h))
+            {
+                enCour = 0;
+                saut = 0;
+                t=0;
+                posPlayer.y = positionSol.y-(mario->h);
+                posPlayer.x = posMarioAbs.x;
+                son = 1;
+                sens =2;
+            }
+
+        }
+        if(saut == 0)
+        {
+            posMarioAbs.x = posPlayer.x;
+            posMarioAbs.y = positionSol.y-(mario->h);
+        }
+
+        SDL_Delay(10);
+
+        // DESSIN
+        Uint32 ciel = SDL_MapRGB(ecran->format, 95,151,255);
+        SDL_FillRect(ecran, NULL, ciel);
+        // Effacement de l'ecran
+
+        // Dessin des images
+                SDL_BlitSurface(sol, NULL, ecran, &positionSol); //&position car on envoye l'addresse de la position
+
+        SDL_BlitSurface(mario, 0, ecran, &posMarioAbs);
+
+        // FIN DESSIN
+
+        // Et n'oublions pas...
+        SDL_Flip(ecran);
+    }
+
+    //FMOD_Sound_Release(sound);
+    //FMOD_Sound_Release(jump);
+   //FMOD_System_Close(system);
+   // FMOD_System_Release(system);
+    // Et on soulage la mémoire !
+    SDL_FreeSurface(mario);
+
+    SDL_Quit();
+
+    return 0;
+}

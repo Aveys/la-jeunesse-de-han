@@ -1,0 +1,172 @@
+void enregistrerJoueur(Joueur j)
+{
+
+    TTF_Font *police=NULL;
+    SDL_Surface *texte=NULL;
+    SDL_Color couleurNoire = {0, 0, 0};
+    char lettre1='A', lettre2='A', lettre3='A';
+    int numlettre=1;
+    SDL_Event event;
+    char pseudo[4]="BON";
+    int continuer=1;
+    police = TTF_OpenFont("pix.ttf", 60);
+
+    SDL_Rect position;
+    position.x=60;
+    position.y=60;
+
+    while(continuer)
+    {
+        SDL_WaitEvent(&event);
+        switch(event.type)
+        {
+            case SDL_QUIT:
+                continuer = 0;
+            break;
+            case SDL_KEYDOWN:
+            switch(event.key.keysym.sym)
+            {
+                case SDLK_UP:
+                switch(numlettre)
+                {
+                    case 1:
+                    switch(lettre1)
+                    {
+                        case 'Z':
+                        lettre1='a';
+                        break;
+                        case 'z':
+                        lettre1='1';
+                        break;
+                        case '9':
+                        lettre1='A';
+                        break;
+                        default:
+                        lettre1++;
+                        break;
+                    }
+                    break;
+                    case 2:
+                    switch(lettre2)
+                    {
+                        case 'Z':
+                        lettre2='a';
+                        break;
+                        case 'z':
+                        lettre2='1';
+                        break;
+                        case '9':
+                        lettre2='A';
+                        break;
+                        default:
+                        lettre2++;
+                        break;
+
+                    }
+                    break;
+                    case 3:
+                    switch(lettre3)
+                    {
+                        case 'Z':
+                        lettre3='a';
+                        break;
+                        case 'z':
+                        lettre3='1';
+                        break;
+                        case '9':
+                        lettre3='A';
+                        break;
+                        default:
+                        lettre3++;
+                        break;
+
+                    }
+                    break;
+                    default:
+                    break;
+                }
+                break;
+                case SDLK_DOWN:
+                switch(numlettre)
+                {
+                    case 1:
+                    switch(lettre1)
+                    {
+                        case 'A':
+                        lettre1='9';
+                        break;
+                        case '1':
+                        lettre1='z';
+                        break;
+                        case 'a':
+                        lettre1='Z';
+                        break;
+                        default:
+                        lettre1--;
+                        break;
+                    }
+                    break;
+                    case 2:
+                    switch(lettre2)
+                    {
+                        case 'A':
+                        lettre2='9';
+                        break;
+                        case '1':
+                        lettre2='z';
+                        break;
+                        case 'a':
+                        lettre2='Z';
+                        break;
+                        default:
+                        lettre2--;
+                        break;
+                    }
+                    break;
+                    case 3:
+                    switch(lettre3)
+                    {
+                        case 'A':
+                        lettre3='9';
+                        break;
+                        case '1':
+                        lettre3='z';
+                        break;
+                        case 'a':
+                        lettre3='Z';
+                        break;
+                        default:
+                        lettre3--;
+                        break;
+                    }
+                    break;
+                    default:
+                    break;
+                }
+                break;
+                case SDLK_SPACE:
+                if(numlettre < 3)
+                    numlettre++;
+                else
+                    continuer=0;
+                break;
+                default:
+                break;
+            }
+            break;
+            default:
+            break;
+        }
+        pseudo[0]=lettre1;
+        pseudo[1]=lettre2;
+        pseudo[2]=lettre3;
+        SDL_FillRect(screen, 0, SDL_MapRGB(screen->format, 255,255, 255));
+        texte = TTF_RenderText_Blended(police, pseudo, couleurNoire);
+        SDL_BlitSurface(texte, NULL, screen, &position);
+        SDL_Flip(screen);
+    }
+TTF_CloseFont(police);
+TTF_Quit();
+strcpy(j->pseudo, pseudo);
+
+}
