@@ -1,0 +1,4 @@
+screenWidth = 1024
+screenHeight = 768
+color = 32
+fullscreen = 0

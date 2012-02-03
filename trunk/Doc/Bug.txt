@@ -1,0 +1,10 @@
+Mathack
+Ce fichier permet de recenser tout type de bug que nous pouvons ou pas corriger.
+Merci d'indiquer le maximum d'information quand un bug ce produit. Savoir si il est alléatoire ou pas
+Cela nous servira à débuger le maxium de choses avant lundi.
+
+Liste des bug :
+- Problème lors de ajout et supprésion du collone avec le realloc. Avancement : 
+ Resolution pour lundi : Hack : utilise un grand tableau sans realloc juste pour la presentation
+ 
+-Bug d'affichage du credits de façon aléatoire avec une fenetre ne répondant plus. Avancement : Analyse
