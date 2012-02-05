@@ -607,6 +607,7 @@ int SDLMessageBox(char *str)
     posTexteNon.x = posRect.x + (rectangle->w*3)/4-texteNon->w;
     posTexteNon.y = posTexteOui.y;
     SDL_BlitSurface(texteNon, NULL, screen, &posTexteNon);
+    SDL_Flip(screen);
     SDL_Event event;
     while(continuer)
     {
