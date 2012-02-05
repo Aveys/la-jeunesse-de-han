@@ -770,9 +770,9 @@ int test_collision(SDL_Rect surface_a_tester,Map *carte,int opt,int opt2,Joueur 
                 case tileMUR:   //mur
                     if(i == posymax)    //si la case est sur le bas du perso alors il atteri
                     {
-                        tmp = (surface_a_tester.x+surface_a_tester.w+carte->xscroll) - (j-1)*LTILE;
-                        tmp2 = (surface_a_tester.x+carte->xscroll) - j*LTILE;
-                        if(no_perso == 0 && ((perso1->dir > 0 && tmp > perso1->vitesse && tmp < LTILE-perso1->vitesse+surface_a_tester.w) || (perso1->dir < 0 && tmp2 < -perso1->vitesse && tmp2+surface_a_tester.w < LTILE-perso1->vitesse)))
+                        if(no_perso != 0)
+                            return ATTERI;
+                        else if(perso1->positionP.y+carte->yscroll+perso1->persoSprite->h-perso1->sensyp <= (i-1)*HTILE)
                             return ATTERI;
                     }
                     return MUR_COLLISION;
@@ -787,9 +787,9 @@ int test_collision(SDL_Rect surface_a_tester,Map *carte,int opt,int opt2,Joueur 
                     }
                     else if(i == posymax)    //si la case est sur le bas du perso alors il atteri
                     {
-                        tmp = (surface_a_tester.x+surface_a_tester.w+carte->xscroll) - (j-1)*LTILE;
-                        tmp2 = (surface_a_tester.x+carte->xscroll) - j*LTILE;
-                        if(no_perso == 0 && ((perso1->dir > 0 && tmp > 0 && tmp < LTILE+surface_a_tester.w) || (perso1->dir < 0 && tmp2 < 0 && tmp2+surface_a_tester.w < LTILE)))
+                        if(no_perso != 0)
+                            return ATTERI;
+                        else if(perso1->positionP.y+carte->yscroll+perso1->persoSprite->h-perso1->sensyp <= (i-1)*HTILE)
                             return ATTERI;
                     }
                     return MUR_COLLISION;

@@ -609,3 +609,24 @@
 	"menu.h"
 	"reglages.h"
 
+1328454044 source:c:\users\thomas\documents\ap2 projet mario\mario star wars google code\ennemie.cpp
+	"jeu.h"
+	"ennemie.h"
+	<math.h>
+
+1328479417 source:c:\users\thomas\documents\ap2 projet mario\mario star wars google code\deplace_mario.cpp
+	<cstdlib>
+	<stdlib.h>
+	<SDL/SDL.h>
+	<SDL.h>
+	<SDL/SDL_ttf.h>
+	"constantes.h"
+	"deplace_mario.h"
+	"highscore.h"
+	"ennemie.h"
+	"jeu.h"
+	"editeur.h"
+	<windows.h>
+	<math.h>
+	<fmodex/fmod.h>
+
