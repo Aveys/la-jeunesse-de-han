@@ -1,4 +1,4 @@
-screenWidth = 1024
-screenHeight = 768
+screenWidth = 800
+screenHeight = 600
 color = 32
 fullscreen = 0

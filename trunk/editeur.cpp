@@ -172,12 +172,12 @@ void creationNiveau(Map *carte)
     sprintf(newNiveau, "niveau%i", numNiveau);
     char filename[50];
     sprintf(filename, "niveau/%s", newNiveau);
-    //MessageBox(NULL, filename, "Test", MB_ICONQUESTION|MB_OK|MB_DEFBUTTON1);
+    //MessageBox(NULL, filename, "Test", MB_ICONQUESTION|MB_OK|MB_DEFBUTTON1|MB_SERVICE_NOTIFICATION);
     FILE* fgestNiveau = fopen("niveau/gestionNiveau", "a");
     if(fgestNiveau == NULL)
     {
         MessageBox(NULL,"Impossible d'ouvrir la gestion des niveau", "Erreur",
-                   MB_ICONERROR|MB_OK|MB_DEFBUTTON1);
+                   MB_ICONERROR|MB_OK|MB_DEFBUTTON1|MB_SERVICE_NOTIFICATION);
         exit(EXIT_FAILURE);
     }
     fprintf(fgestNiveau, "%i %s %s\n", numNiveau, newNiveau, "image/map/minimap/level2.bmp");
@@ -204,17 +204,11 @@ void gestionToucheEditeur(Map *carte, ParamMap *opt, SDL_Surface *ecran,  int *c
         switch (event.type)
         {
         case SDL_QUIT:
-            switch(SDLMessageBox((char*)"Voulez vous quitter le jeu ?", (char*)"Quitter ?!"))
+            if(SDLMessageBox((char*)"Voulez vous quitter le jeu ?"))
             {
-            case IDYES:
                 TTF_Quit();
                 SDL_Quit();
                 exit(EXIT_SUCCESS);
-                break;
-            case IDNO:
-                break;
-            default:
-                break;
             }
             break;
         case SDL_KEYDOWN:
@@ -396,18 +390,12 @@ void gestionToucheEditeur(Map *carte, ParamMap *opt, SDL_Surface *ecran,  int *c
                 strcat(str, carte->gestNiveau[carte->level].fileName);
                 strcat(str, " ?");
                 SDL_ShowCursor(1);
-                switch(SDLMessageBox((char*)str, (char*)"Sauvegarde du niveau"))
+                if(SDLMessageBox((char*)str))
                 {
-                case IDYES:
                     sauvegardeMap(*carte);
-                    break;
-                case IDNO:
-                    break;
-                default:
-                    break;
                 }
                 SDL_ShowCursor(0);
-            break;
+                break;
                 //Gestion des bloc
             case SDLK_1:
                 *typeBloc = tileMUR;
@@ -548,15 +536,9 @@ void gestionToucheEditeur(Map *carte, ParamMap *opt, SDL_Surface *ecran,  int *c
                 strcat(str, carte->gestNiveau[carte->level].fileName);
                 strcat(str, " ?");
                 SDL_ShowCursor(1);
-                switch(SDLMessageBox((char*)str, (char*)"Sauvegarde du niveau"))
+                if(SDLMessageBox((char*)str))
                 {
-                case IDYES:
                     sauvegardeMap(*carte);
-                    break;
-                case IDNO:
-                    break;
-                default:
-                    break;
                 }
             }
             break;
@@ -601,12 +583,106 @@ void gestionToucheEditeur(Map *carte, ParamMap *opt, SDL_Surface *ecran,  int *c
 }
 //Fonction qui permet d'afficher une boite de dialogue return le numero du bouton appuier
 //Plus d'info : http://msdn.microsoft.com/en-us/library/ms645505%28VS.85%29.aspx
-int SDLMessageBox(char *str, char *titre)
+int SDLMessageBox(char *str)
 {
-    int msgboxID = MessageBox(NULL ,str, titre,
-                              MB_ICONQUESTION | MB_YESNO | MB_DEFBUTTON2
-                             );
-    return msgboxID;
+    int continuer = 1,choix = 0,touche_enfonce = 0;
+    SDL_Surface *screen = SDL_GetVideoSurface();
+    SDL_Surface *rectangle = SDL_CreateRGBSurface(SDL_HWSURFACE, 7*strlen(str), 50, 32, 0, 0, 0, 0),*texteOui = NULL,*texteNon = NULL,*texteStr = NULL;
+    SDL_FillRect(rectangle, NULL, SDL_MapRGB(screen->format, 190, 190, 190));
+    SDL_Rect posRect,posTexteOui,posTexteNon,posTexteStr;
+    posRect.x = screen->w/2 - rectangle->w/2;
+    posRect.y = screen->h/2 - rectangle->h/2;
+    SDL_BlitSurface(rectangle, NULL, screen, &posRect);
+    TTF_Font *police = TTF_OpenFont("calibri.ttf", 15);
+    SDL_Color couleurNoire = {0, 0, 0},couleurBlanche = {190,190,190},couleurRouge = {255,0,0},couleurTexteNon = {0,0,0},couleurTexteOui = {0,0,0};
+    texteStr = TTF_RenderText_Shaded(police,str,couleurNoire,couleurBlanche);
+    posTexteStr.x = posRect.x+5;
+    posTexteStr.y = posRect.y+10;
+    SDL_BlitSurface(texteStr, NULL, screen, &posTexteStr);
+    texteOui = TTF_RenderText_Shaded(police,"Oui",couleurTexteOui,couleurBlanche);
+    posTexteOui.x = posRect.x+rectangle->w/4;
+    posTexteOui.y = posRect.y+rectangle->h-5-texteOui->h;
+    SDL_BlitSurface(texteOui, NULL, screen, &posTexteOui);
+    texteNon = TTF_RenderText_Shaded(police,"Non",couleurTexteNon,couleurBlanche);
+    posTexteNon.x = posRect.x + (rectangle->w*3)/4-texteNon->w;
+    posTexteNon.y = posTexteOui.y;
+    SDL_BlitSurface(texteNon, NULL, screen, &posTexteNon);
+    SDL_Event event;
+    while(continuer)
+    {
+        SDL_WaitEvent(&event);
+        switch(event.type)
+        {
+        case SDL_QUIT:
+            if(SDLMessageBox((char*)"Voulez vous quitter le jeu ?"))
+            {
+                TTF_Quit();
+                SDL_Quit();
+                exit(EXIT_SUCCESS);
+            }
+            SDL_BlitSurface(rectangle, NULL, screen, &posRect);
+            SDL_BlitSurface(texteStr, NULL, screen, &posTexteStr);
+            SDL_Delay(100);
+            break;
+        case SDL_KEYDOWN:
+            switch(event.key.keysym.sym)
+            {
+            case SDLK_RIGHT: // Flèche droite
+                if(touche_enfonce == 0)
+                {
+                    if(choix)
+                        choix = 0;
+                    else
+                        choix = 1;
+                    touche_enfonce = 1;
+                }
+                break;
+            case SDLK_LEFT: // Flèche gauche
+                if(touche_enfonce == 0)
+                {
+                    if(choix)
+                        choix = 0;
+                    else
+                        choix = 1;
+                    touche_enfonce = 1;
+                }
+                break;
+            case SDLK_RETURN:
+                continuer = 0;
+                break;
+            default:
+                break;
+            }
+            break;
+        case SDL_KEYUP:
+            if(event.key.keysym.sym == SDLK_RIGHT || event.key.keysym.sym == SDLK_LEFT)
+                touche_enfonce = 0;
+            break;
+        }
+        if(choix)
+        {
+            couleurTexteOui = couleurRouge;
+            couleurTexteNon = couleurNoire;
+        }
+        else
+        {
+            couleurTexteOui = couleurNoire;
+            couleurTexteNon = couleurRouge;
+        }
+        SDL_FreeSurface(texteNon);
+        texteNon = TTF_RenderText_Shaded(police,"Non",couleurTexteNon,couleurBlanche);
+        SDL_BlitSurface(texteNon, NULL, screen, &posTexteNon);
+        SDL_FreeSurface(texteOui);
+        texteOui = TTF_RenderText_Shaded(police,"Oui",couleurTexteOui,couleurBlanche);
+        SDL_BlitSurface(texteOui, NULL, screen, &posTexteOui);
+        SDL_Flip(screen);
+    }
+    SDL_FreeSurface(rectangle);
+    SDL_FreeSurface(texteStr);
+    SDL_FreeSurface(texteOui);
+    SDL_FreeSurface(texteNon);
+    TTF_CloseFont(police);
+    return choix;
 }
 
 void versionTexte()
@@ -619,7 +695,7 @@ void versionTexte()
     posTexteVersion.x = SDL_GetVideoSurface()->w - 180;
     posTexteVersion.y = 10;
 
-    versionTexte=TTF_RenderText_Blended(fontVersion, "Version 0.4Beta - Free Only", couleur);
+    versionTexte=TTF_RenderText_Blended(fontVersion, "Version 0.5Beta - Free Only", couleur);
     SDL_BlitSurface(versionTexte, 0, SDL_GetVideoSurface(), &posTexteVersion);
     SDL_FreeSurface(versionTexte);
     TTF_CloseFont(fontVersion);

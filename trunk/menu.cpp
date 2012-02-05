@@ -56,11 +56,11 @@ int menu(SDL_Surface *ecran,SDL_Joystick *joystick)
 
     Bouton menu[6];
     int bActif = 0, i;
+    int touche_enfonce = 0;
     FILE *textMenu = NULL;
     // boucle principale du menu (et du programme)
     while (!done)
     {
-        SDL_EnableKeyRepeat(1000,100);
         SDL_FillRect(ecran, 0, 0xFFFFFF);
 
         textMenu = fopen("textMenu.txt", "rb");
@@ -171,17 +171,25 @@ int menu(SDL_Surface *ecran,SDL_Joystick *joystick)
                 break;
                 //si on appuie sur la touche du haut on décrémente l'indice du menu ou on le replace en bas
             case SDLK_UP:
-                if(bActif > 0)
-                    bActif--;
-                else
-                    bActif = 5;
+                if(touche_enfonce == 0)
+                {
+                    if(bActif > 0)
+                        bActif--;
+                    else
+                        bActif = 5;
+                    touche_enfonce = 1;
+                }
                 break;
                 //si on appuie sur la touche du bas on incrémente l'indice du menu ou le replace en haut
             case SDLK_DOWN:
-                if(bActif < 5)
-                    bActif++;
-                else
-                    bActif = 0;
+                if(touche_enfonce == 0)
+                {
+                    if(bActif < 5)
+                        bActif++;
+                    else
+                        bActif = 0;
+                    touche_enfonce = 1;
+                }
                 break;
                 //si on appuie sur entrée
             case SDLK_RETURN:
@@ -202,6 +210,10 @@ int menu(SDL_Surface *ecran,SDL_Joystick *joystick)
             default:
                 break;
             }
+            break;
+        case SDL_KEYUP:
+            if(event.key.keysym.sym == SDLK_UP || event.key.keysym.sym == SDLK_DOWN)
+                touche_enfonce = 0;
             break;
         } // fin switch
 

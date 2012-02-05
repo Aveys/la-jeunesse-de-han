@@ -46,7 +46,7 @@ Fonction : Affiche une boite de dialogue
 Paramètre : - La texte à afficher
             - Le titre de la msgbox
 */
-int SDLMessageBox(char *str, char *titre);
+int SDLMessageBox(char *str);
 void creationNiveau(Map *carte);
 /*
 Fonction : Permet d'afficher en texte la version du jeu actuel

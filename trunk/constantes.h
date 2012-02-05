@@ -23,7 +23,7 @@
 #define     bandeJeuHaut        70
 #define     bandeJeuBas         0
 
-#define     FRAMERATE   10 //50 fps
+#define     FRAMERATE   5 //50 fps
 #define     FRAMERATE_BALLE 5
 #define     LTILE   32
 #define     HTILE   32

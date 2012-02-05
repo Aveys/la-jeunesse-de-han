@@ -43,7 +43,7 @@ void chargeMap(Map *carte)
     if(fichierMap == NULL)
     {
         fprintf(stderr, "Erreur dans le chargement du fichier de la map");
-        MessageBox(NULL, "Erreur dans le chargement du niveau", "Erreur", MB_ICONERROR | MB_OK | MB_DEFBUTTON1);
+        MessageBox(NULL, "Erreur dans le chargement du niveau", "Erreur", MB_ICONERROR | MB_OK | MB_DEFBUTTON1|MB_SERVICE_NOTIFICATION);
         if(carte->level > 0)
         {
             carte->level--;
@@ -53,7 +53,7 @@ void chargeMap(Map *carte)
             if(fichierMap == NULL)
             {
                 fprintf(stderr, "Erreur dans le chargement du fichier de la map");
-                MessageBox(NULL, "Erreur dans le chargement du niveau", "Erreur", MB_ICONERROR | MB_OK | MB_DEFBUTTON1);
+                MessageBox(NULL, "Erreur dans le chargement du niveau", "Erreur", MB_ICONERROR | MB_OK | MB_DEFBUTTON1|MB_SERVICE_NOTIFICATION);
             }
         }
     }
@@ -219,7 +219,7 @@ void listeDesNiveau(Map *carte)
     if(fgestionNiveau == NULL)
     {
         MessageBox(NULL,"Impossible d'ouvrir la gestion des niveau", "Erreur",
-                   MB_ICONERROR|MB_OK|MB_DEFBUTTON1);
+                   MB_ICONERROR|MB_OK|MB_DEFBUTTON1|MB_SERVICE_NOTIFICATION);
         exit(EXIT_FAILURE);
     }
     //Met les niveau dans la structure
@@ -238,7 +238,7 @@ void listeDesNiveau(Map *carte)
     carte->nbNiveau = nbLigne;
     /*char debug[100];
     sprintf(debug, "Nb niveau : %i", carte->nbNiveau);
-    MessageBox(NULL, debug, "Debug", MB_ICONQUESTION|MB_OK|MB_DEFBUTTON1);*/
+    MessageBox(NULL, debug, "Debug", MB_ICONQUESTION|MB_OK|MB_DEFBUTTON1|MB_SERVICE_NOTIFICATION);*/
     rewind(fgestionNiveau);
     for(i=0; i<nbLigne; i++)
     {
@@ -410,14 +410,14 @@ int scrollingPersoY(Perso mario, Map *carte, SDL_Surface *screen)
 {
     if(mario.positionP.y+ mario.persoSprite->h>= (screen->h*0.75))
     {
-        if(carte->yscroll < (carte->MONDE_HAUTEUR - 1)*HTILE - screen->h)
+        if(carte->yscroll < (carte->MONDE_HAUTEUR - 1)*HTILE - screen->h && mario.sensyp > 0)
         {
             carte->yscroll += mario.vitesse;
         }
         else
             return 1;
     }
-    else if(mario.positionP.y <= (screen->h/4))
+    else if(mario.positionP.y <= (screen->h/4) && mario.sensyp < 0)
     {
         if(carte->yscroll > 0)
         {
