@@ -742,7 +742,7 @@ void position_perso_tab(SDL_Rect surface_a_tester,int *posxmin,int *posymin,int 
 */
 int test_collision(SDL_Rect surface_a_tester,Map *carte,int opt,int opt2,Joueur *joueur1,Perso *perso1,int no_perso)
 {
-    int posxmin,posymin,posxmax,posymax,i,j,tmp = 0,tmp2=0;
+    int posxmin,posymin,posxmax,posymax,i,j;
     //Point p;
     position_perso_tab(surface_a_tester,&posxmin,&posymin,&posxmax,&posymax,*carte,opt2);   //determination des cases a tester
     if(opt == 1)    //si on veut tester si le perso a atteri alors on test que les cases en bas de la surface
