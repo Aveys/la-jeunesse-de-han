@@ -28,22 +28,24 @@ void deplace_ennemi(Ennemi *ennemi1,Map carte,SDL_Surface* screen,Perso perso1)
     ennemi1->positionE.y += ennemi1->sensye;
     if(ennemi1->sensye != 0)
     {
-        if(test_collision(ennemi1->positionE,&carte,1,1,NULL,NULL,1) == ATTERI) //test si le mob a bien atteri avant de bouger
+        if(test_collision(ennemi1->positionE,&carte,1,1,NULL,NULL,2) == ATTERI) //test si le mob a bien atteri avant de bouger
         {
             ennemi1->sensye = 0;    //si oui alors il bouge plus que en X
             ennemi1->sensxe = 2;
         }
     }
-    if(test_collision(ennemi1->positionE,&carte,3,1,NULL,NULL,1) != 0) //si le mob est en collision avec un element du decor alors il fait demi tour
+    if(test_collision(ennemi1->positionE,&carte,3,1,NULL,NULL,2) != 0) //si le mob est en collision avec un element du decor alors il fait demi tour
     {
         //MatHack:Deux sens pour l'ennemie
         if(ennemi1->sensxe < 1)
         {
+            SDL_FreeSurface(ennemi1->EnnemiSprite);
             ennemi1->EnnemiSprite = IMG_Load("image/perso/ennemieD.bmp");
             associer_surface_pos(ennemi1->EnnemiSprite,&ennemi1->positionE);
         }
         else if(ennemi1->sensxe > 1)
         {
+            SDL_FreeSurface(ennemi1->EnnemiSprite);
             ennemi1->EnnemiSprite = IMG_Load("image/perso/ennemieG.bmp");
             associer_surface_pos(ennemi1->EnnemiSprite,&ennemi1->positionE);
         }
@@ -54,7 +56,7 @@ void deplace_ennemi(Ennemi *ennemi1,Map carte,SDL_Surface* screen,Perso perso1)
     //test pour ne pas tomber dans un trou
     ennemi1->positionE.y += 10;    //position pour tester la case suivante
     ennemi1->positionE.x += ennemi1->sensxe;
-    if(test_collision(ennemi1->positionE,&carte,1,1,NULL,NULL,1) != ATTERI)    //si il n'y a pas de mur en dessous alors il fait demi tour
+    if(test_collision(ennemi1->positionE,&carte,1,1,NULL,NULL,2) != ATTERI)    //si il n'y a pas de mur en dessous alors il fait demi tour
     {
         ennemi1->positionE.x -= ennemi1->sensxe;
         ennemi1->sensxe *= -1;

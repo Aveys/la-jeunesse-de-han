@@ -1,12 +1,12 @@
 # depslib dependency file v1.0
-1328303921 source:c:\users\arthur\desktop\annecy\ap\ap2\semaine spéciale\trunk\mario_star_wars_cba\credits.cpp
+1327878337 source:c:\users\thomas\documents\ap2 projet mario\mario-star-wars\trunk\mario_star_wars_cba\credits.cpp
 	<cstring>
 	<string.h>
 	<fmodex/fmod.h>
 	"constantes.h"
 	"menu.h"
 
-1328303921 c:\users\arthur\desktop\annecy\ap\ap2\semaine spéciale\trunk\mario_star_wars_cba\constantes.h
+1328454248 c:\users\thomas\documents\ap2 projet mario\mario-star-wars\trunk\mario_star_wars_cba\constantes.h
 	<cstdlib>
 	<cstdio>
 	<ctime>
@@ -378,7 +378,7 @@
 	"begin_code.h"
 	"close_code.h"
 
-1325788834 c:\program files (x86)\codeblocks\sdl-1.2.14\include\sdl_image.h
+1258242678 c:\program files (x86)\codeblocks\sdl-1.2.14\include\sdl_image.h
 	"SDL.h"
 	"SDL_version.h"
 	"begin_code.h"
@@ -389,9 +389,9 @@
 	"begin_code.h"
 	"close_code.h"
 
-1328303921 c:\users\arthur\desktop\annecy\ap\ap2\semaine spéciale\trunk\mario_star_wars_cba\menu.h
+1327872394 c:\users\thomas\documents\ap2 projet mario\mario-star-wars\trunk\mario_star_wars_cba\menu.h
 
-1328303921 source:c:\users\arthur\desktop\annecy\ap\ap2\semaine spéciale\trunk\mario_star_wars_cba\deplace_mario.cpp
+1328455766 source:c:\users\thomas\documents\ap2 projet mario\mario-star-wars\trunk\mario_star_wars_cba\deplace_mario.cpp
 	<cstdlib>
 	<stdlib.h>
 	<SDL/SDL.h>
@@ -407,48 +407,48 @@
 	<math.h>
 	<fmodex/fmod.h>
 
-1328303921 c:\users\arthur\desktop\annecy\ap\ap2\semaine spéciale\trunk\mario_star_wars_cba\deplace_mario.h
+1328215487 c:\users\thomas\documents\ap2 projet mario\mario-star-wars\trunk\mario_star_wars_cba\deplace_mario.h
 	"constantes.h"
 	"map.h"
 	<fmodex/fmod.h>
 
-1328303921 c:\users\arthur\desktop\annecy\ap\ap2\semaine spéciale\trunk\mario_star_wars_cba\map.h
+1327869957 c:\users\thomas\documents\ap2 projet mario\mario-star-wars\trunk\mario_star_wars_cba\map.h
 	"constantes.h"
 
-1328303921 c:\users\arthur\desktop\annecy\ap\ap2\semaine spéciale\trunk\mario_star_wars_cba\highscore.h
+1327869836 c:\users\thomas\documents\ap2 projet mario\mario-star-wars\trunk\mario_star_wars_cba\highscore.h
 
-1328303921 c:\users\arthur\desktop\annecy\ap\ap2\semaine spéciale\trunk\mario_star_wars_cba\ennemie.h
+1327869988 c:\users\thomas\documents\ap2 projet mario\mario-star-wars\trunk\mario_star_wars_cba\ennemie.h
 	"constantes.h"
 	"deplace_mario.h"
 
-1328303921 c:\users\arthur\desktop\annecy\ap\ap2\semaine spéciale\trunk\mario_star_wars_cba\jeu.h
+1327872556 c:\users\thomas\documents\ap2 projet mario\mario-star-wars\trunk\mario_star_wars_cba\jeu.h
 	<SDL_image.h>
 	"constantes.h"
 	"deplace_mario.h"
 	"map.h"
 
-1328303921 c:\users\arthur\desktop\annecy\ap\ap2\semaine spéciale\trunk\mario_star_wars_cba\editeur.h
+1328447441 c:\users\thomas\documents\ap2 projet mario\mario-star-wars\trunk\mario_star_wars_cba\editeur.h
 	"constantes.h"
 	"map.h"
 
-1328303921 source:c:\users\arthur\desktop\annecy\ap\ap2\semaine spéciale\trunk\mario_star_wars_cba\editeur.cpp
+1328451287 source:c:\users\thomas\documents\ap2 projet mario\mario-star-wars\trunk\mario_star_wars_cba\editeur.cpp
 	"editeur.h"
 	"jeu.h"
 	"windows.h"
 
-1328303921 source:c:\users\arthur\desktop\annecy\ap\ap2\semaine spéciale\trunk\mario_star_wars_cba\ennemie.cpp
+1328454044 source:c:\users\thomas\documents\ap2 projet mario\mario-star-wars\trunk\mario_star_wars_cba\ennemie.cpp
 	"jeu.h"
 	"ennemie.h"
 	<math.h>
 
-1328303921 source:c:\users\arthur\desktop\annecy\ap\ap2\semaine spéciale\trunk\mario_star_wars_cba\highscore.cpp
+1327878877 source:c:\users\thomas\documents\ap2 projet mario\mario-star-wars\trunk\mario_star_wars_cba\highscore.cpp
 	<cstring>
 	<strings.h>
 	"constantes.h"
 	"highscore.h"
 	<fmodex/fmod.h>
 
-1328303921 source:c:\users\arthur\desktop\annecy\ap\ap2\semaine spéciale\trunk\mario_star_wars_cba\jeu.cpp
+1328452225 source:c:\users\thomas\documents\ap2 projet mario\mario-star-wars\trunk\mario_star_wars_cba\jeu.cpp
 	<ctime>
 	<cstdio>
 	<cstdlib>
@@ -462,7 +462,7 @@
 	"editeur.h"
 	<fmodex/fmod.h>
 
-1328303921 source:c:\users\arthur\desktop\annecy\ap\ap2\semaine spéciale\trunk\mario_star_wars_cba\main.cpp
+1328366964 source:c:\users\thomas\documents\ap2 projet mario\mario-star-wars\trunk\mario_star_wars_cba\main.cpp
 	"windows.h"
 	"constantes.h"
 	"map.h"
@@ -471,12 +471,12 @@
 	"menu.h"
 	<fmodex/fmod.h>
 
-1328303921 source:c:\users\arthur\desktop\annecy\ap\ap2\semaine spéciale\trunk\mario_star_wars_cba\map.cpp
+1328445687 source:c:\users\thomas\documents\ap2 projet mario\mario-star-wars\trunk\mario_star_wars_cba\map.cpp
 	"map.h"
 	<SDL_image.h>
 	<windows.h>
 
-1328304077 source:c:\users\arthur\desktop\annecy\ap\ap2\semaine spéciale\trunk\mario_star_wars_cba\menu.cpp
+1328445160 source:c:\users\thomas\documents\ap2 projet mario\mario-star-wars\trunk\mario_star_wars_cba\menu.cpp
 	<cstring>
 	<string.h>
 	"constantes.h"
@@ -489,11 +489,120 @@
 	"credits.h"
 	<fmodex/fmod.h>
 
-1328303918 c:\users\arthur\desktop\annecy\ap\ap2\semaine spéciale\trunk\mario_star_wars_cba\reglages.h
+1327872283 c:\users\thomas\documents\ap2 projet mario\mario-star-wars\trunk\mario_star_wars_cba\reglages.h
 
-1328217306 c:\users\arthur\desktop\annecy\ap\ap2\semaine spéciale\trunk\mario_star_wars_cba\credits.h
+1327869836 c:\users\thomas\documents\ap2 projet mario\mario-star-wars\trunk\mario_star_wars_cba\credits.h
 
-1328303921 source:c:\users\arthur\desktop\annecy\ap\ap2\semaine spéciale\trunk\mario_star_wars_cba\reglages.cpp
+1328132660 source:c:\users\thomas\documents\ap2 projet mario\mario-star-wars\trunk\mario_star_wars_cba\reglages.cpp
+	<cstring>
+	<string.h>
+	"constantes.h"
+	"menu.h"
+	"reglages.h"
+
+1327878337 source:c:\users\thomas\documents\ap2 projet mario\mario star wars google code\credits.cpp
+	<cstring>
+	<string.h>
+	<fmodex/fmod.h>
+	"constantes.h"
+	"menu.h"
+
+1328454248 c:\users\thomas\documents\ap2 projet mario\mario star wars google code\constantes.h
+	<cstdlib>
+	<cstdio>
+	<ctime>
+	<stdlib.h>
+	<stdio.h>
+	<time.h>
+	<SDL/SDL.h>
+	<SDL.h>
+	<SDL_image.h>
+	<SDL/SDL_ttf.h>
+
+1327872394 c:\users\thomas\documents\ap2 projet mario\mario star wars google code\menu.h
+
+1328451287 source:c:\users\thomas\documents\ap2 projet mario\mario star wars google code\editeur.cpp
+	"editeur.h"
+	"jeu.h"
+	"windows.h"
+
+1328447441 c:\users\thomas\documents\ap2 projet mario\mario star wars google code\editeur.h
+	"constantes.h"
+	"map.h"
+
+1327869957 c:\users\thomas\documents\ap2 projet mario\mario star wars google code\map.h
+	"constantes.h"
+
+1327872556 c:\users\thomas\documents\ap2 projet mario\mario star wars google code\jeu.h
+	<SDL_image.h>
+	"constantes.h"
+	"deplace_mario.h"
+	"map.h"
+
+1328215487 c:\users\thomas\documents\ap2 projet mario\mario star wars google code\deplace_mario.h
+	"constantes.h"
+	"map.h"
+	<fmodex/fmod.h>
+
+1327878877 source:c:\users\thomas\documents\ap2 projet mario\mario star wars google code\highscore.cpp
+	<cstring>
+	<strings.h>
+	"constantes.h"
+	"highscore.h"
+	<fmodex/fmod.h>
+
+1327869836 c:\users\thomas\documents\ap2 projet mario\mario star wars google code\highscore.h
+
+1328452225 source:c:\users\thomas\documents\ap2 projet mario\mario star wars google code\jeu.cpp
+	<ctime>
+	<cstdio>
+	<cstdlib>
+	<stdio.h>
+	<stdlib.h>
+	<time.h>
+	"jeu.h"
+	"highscore.h"
+	"menu.h"
+	"ennemie.h"
+	"editeur.h"
+	<fmodex/fmod.h>
+
+1327869988 c:\users\thomas\documents\ap2 projet mario\mario star wars google code\ennemie.h
+	"constantes.h"
+	"deplace_mario.h"
+
+1328366964 source:c:\users\thomas\documents\ap2 projet mario\mario star wars google code\main.cpp
+	"windows.h"
+	"constantes.h"
+	"map.h"
+	"deplace_mario.h"
+	"jeu.h"
+	"menu.h"
+	<fmodex/fmod.h>
+
+1328445687 source:c:\users\thomas\documents\ap2 projet mario\mario star wars google code\map.cpp
+	"map.h"
+	<SDL_image.h>
+	<windows.h>
+
+1328445160 source:c:\users\thomas\documents\ap2 projet mario\mario star wars google code\menu.cpp
+	<cstring>
+	<string.h>
+	"constantes.h"
+	"menu.h"
+	"editeur.h"
+	"reglages.h"
+	"credits.h"
+	"jeu.h"
+	"highscore.h"
+	"credits.h"
+	<fmodex/fmod.h>
+
+1327872283 c:\users\thomas\documents\ap2 projet mario\mario star wars google code\reglages.h
+
+1327869836 c:\users\thomas\documents\ap2 projet mario\mario star wars google code\credits.h
+
+1328132660 source:c:\users\thomas\documents\ap2 projet mario\mario star wars google code\reglages.cpp
 	<cstring>
 	<string.h>
 	"constantes.h"

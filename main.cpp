@@ -25,7 +25,7 @@ int main ( int argc, char** argv )
     //fichier de configuration du jeu
     if(config == NULL)
     {
-        MessageBox(NULL, (char*)"Impossible d'ouvrir config.txt", (char*)"erreur", MB_ICONERROR|MB_OK|MB_DEFBUTTON1);
+        MessageBox(NULL, (char*)"Impossible d'ouvrir config.txt", (char*)"erreur", MB_ICONERROR|MB_OK|MB_DEFBUTTON1|MB_SERVICE_NOTIFICATION);
         return 1;
     }
     // initialisation de SDL video
@@ -33,7 +33,7 @@ int main ( int argc, char** argv )
     {
         char erreur[60];
         sprintf(erreur, "Unable to init SDL: %s\n", SDL_GetError() );
-        MessageBox(NULL, (char*)erreur, (char*)"erreur", MB_ICONERROR|MB_OK|MB_DEFBUTTON1);
+        MessageBox(NULL, (char*)erreur, (char*)"erreur", MB_ICONERROR|MB_OK|MB_DEFBUTTON1|MB_SERVICE_NOTIFICATION);
         return 1;
     }
     SDL_putenv("SDL_VIDEO_CENTERED=center");
@@ -42,7 +42,7 @@ int main ( int argc, char** argv )
     {
         char erreur[60];
         sprintf(erreur, "Unable to init TTF: %s\n", SDL_GetError());
-        MessageBox(NULL, (char*)erreur, (char*)"erreur", MB_ICONERROR|MB_OK|MB_DEFBUTTON1);
+        MessageBox(NULL, (char*)erreur, (char*)"erreur", MB_ICONERROR|MB_OK|MB_DEFBUTTON1|MB_SERVICE_NOTIFICATION);
         return 1;
     }
     //on recupere les infos relatives à la fenetre
@@ -62,12 +62,11 @@ int main ( int argc, char** argv )
         screen = SDL_SetVideoMode(fenetre.width, fenetre.height, fenetre.couleur,SDL_HWSURFACE|SDL_DOUBLEBUF);
     else
         screen = SDL_SetVideoMode(fenetre.width, fenetre.height, fenetre.couleur,SDL_HWSURFACE|SDL_DOUBLEBUF|SDL_FULLSCREEN);
-
     if ( !screen )
     {
         char erreur[60];
         sprintf(erreur, "Unable to set window: %s\n", SDL_GetError());
-        MessageBox(NULL, (char*)erreur, (char*)"erreur", MB_ICONERROR|MB_OK|MB_DEFBUTTON1);
+        MessageBox(NULL, (char*)erreur, (char*)"erreur", MB_ICONERROR|MB_OK|MB_DEFBUTTON1|MB_SERVICE_NOTIFICATION);
         return 1;
     }
 
@@ -78,9 +77,9 @@ int main ( int argc, char** argv )
     char erreur[60];
     sprintf(erreur,"%i joystick detecter",SDL_NumJoysticks());
     /*if(SDL_NumJoysticks() == 0)
-        MessageBox(NULL,erreur , (char*)"erreur", MB_ICONERROR|MB_OK|MB_DEFBUTTON1);
+        MessageBox(NULL,erreur , (char*)"erreur", MB_ICONERROR|MB_OK|MB_DEFBUTTON1|MB_SERVICE_NOTIFICATION);
     else
-        MessageBox(NULL,erreur , (char*)"erreur", MB_ICONASTERISK|MB_OK|MB_DEFBUTTON1);*/
+        MessageBox(NULL,erreur , (char*)"erreur", MB_ICONASTERISK|MB_OK|MB_DEFBUTTON1|MB_SERVICE_NOTIFICATION);*/
     SDL_JoystickEventState(SDL_ENABLE);
     joystick = SDL_JoystickOpen(0);
 
@@ -88,7 +87,7 @@ int main ( int argc, char** argv )
     //on appelle le menu.
     if(menu(screen,joystick) != 0)
     {
-        MessageBox(NULL, (char*)"erreur menu", (char*)"erreur", MB_ICONERROR|MB_OK|MB_DEFBUTTON1);
+        MessageBox(NULL, (char*)"erreur menu", (char*)"erreur", MB_ICONERROR|MB_OK|MB_DEFBUTTON1|MB_SERVICE_NOTIFICATION);
         return 1;
     }
 

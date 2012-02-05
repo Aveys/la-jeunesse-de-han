@@ -1,61 +1,61 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
-	<ActiveTarget name="Release" />
-	<File name="constantes.h" open="1" top="0" tabpos="1">
-		<Cursor position="1735" topLine="50" />
+	<ActiveTarget name="Debug" />
+	<File name="constantes.h" open="1" top="0" tabpos="10">
+		<Cursor position="2011" topLine="66" />
 	</File>
-	<File name="credits.cpp" open="1" top="0" tabpos="17">
-		<Cursor position="693" topLine="0" />
+	<File name="credits.cpp" open="1" top="0" tabpos="14">
+		<Cursor position="6067" topLine="466" />
 	</File>
-	<File name="credits.h" open="1" top="0" tabpos="18">
-		<Cursor position="0" topLine="0" />
+	<File name="credits.h" open="0" top="0" tabpos="8">
+		<Cursor position="382" topLine="0" />
 	</File>
-	<File name="deplace_mario.cpp" open="1" top="0" tabpos="6">
-		<Cursor position="2493" topLine="78" />
+	<File name="deplace_mario.cpp" open="1" top="0" tabpos="12">
+		<Cursor position="10599" topLine="207" />
 	</File>
-	<File name="deplace_mario.h" open="1" top="0" tabpos="2">
-		<Cursor position="561" topLine="0" />
+	<File name="deplace_mario.h" open="1" top="0" tabpos="4">
+		<Cursor position="1220" topLine="0" />
 	</File>
 	<File name="editeur.cpp" open="1" top="0" tabpos="8">
-		<Cursor position="3773" topLine="88" />
+		<Cursor position="23875" topLine="605" />
 	</File>
-	<File name="editeur.h" open="1" top="0" tabpos="11">
-		<Cursor position="404" topLine="0" />
+	<File name="editeur.h" open="1" top="0" tabpos="1">
+		<Cursor position="277" topLine="0" />
 	</File>
-	<File name="ennemie.cpp" open="1" top="0" tabpos="10">
-		<Cursor position="1334" topLine="30" />
+	<File name="ennemie.cpp" open="1" top="0" tabpos="15">
+		<Cursor position="2353" topLine="46" />
 	</File>
-	<File name="ennemie.h" open="1" top="0" tabpos="12">
-		<Cursor position="121" topLine="0" />
+	<File name="ennemie.h" open="1" top="0" tabpos="5">
+		<Cursor position="67" topLine="0" />
 	</File>
-	<File name="highscore.cpp" open="1" top="0" tabpos="19">
-		<Cursor position="304" topLine="3" />
+	<File name="highscore.cpp" open="1" top="0" tabpos="11">
+		<Cursor position="2460" topLine="77" />
 	</File>
-	<File name="highscore.h" open="1" top="0" tabpos="9">
-		<Cursor position="0" topLine="0" />
+	<File name="highscore.h" open="0" top="0" tabpos="2">
+		<Cursor position="236" topLine="23" />
 	</File>
-	<File name="jeu.cpp" open="1" top="0" tabpos="4">
-		<Cursor position="3003" topLine="67" />
+	<File name="jeu.cpp" open="1" top="1" tabpos="6">
+		<Cursor position="11793" topLine="288" />
 	</File>
-	<File name="main.cpp" open="1" top="1" tabpos="3">
-		<Cursor position="918" topLine="79" />
+	<File name="main.cpp" open="1" top="0" tabpos="7">
+		<Cursor position="3410" topLine="80" />
 	</File>
-	<File name="map.cpp" open="1" top="0" tabpos="13">
-		<Cursor position="4600" topLine="102" />
+	<File name="map.cpp" open="1" top="0" tabpos="9">
+		<Cursor position="16536" topLine="435" />
 	</File>
-	<File name="map.h" open="1" top="0" tabpos="7">
-		<Cursor position="486" topLine="0" />
+	<File name="map.h" open="1" top="0" tabpos="2">
+		<Cursor position="105" topLine="0" />
 	</File>
-	<File name="menu.cpp" open="1" top="0" tabpos="5">
-		<Cursor position="1634" topLine="47" />
+	<File name="menu.cpp" open="1" top="0" tabpos="3">
+		<Cursor position="4870" topLine="136" />
 	</File>
-	<File name="menu.h" open="1" top="0" tabpos="15">
-		<Cursor position="2514" topLine="32" />
+	<File name="menu.h" open="0" top="0" tabpos="5">
+		<Cursor position="2708" topLine="0" />
 	</File>
-	<File name="reglages.cpp" open="1" top="0" tabpos="14">
-		<Cursor position="11203" topLine="304" />
+	<File name="reglages.cpp" open="1" top="0" tabpos="13">
+		<Cursor position="5077" topLine="139" />
 	</File>
-	<File name="reglages.h" open="1" top="0" tabpos="16">
-		<Cursor position="0" topLine="0" />
+	<File name="reglages.h" open="0" top="0" tabpos="7">
+		<Cursor position="526" topLine="29" />
 	</File>
 </CodeBlocks_layout_file>

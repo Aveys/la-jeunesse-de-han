@@ -293,7 +293,7 @@ void jeu(SDL_Surface* screen,Map carteJeu, ParamMap opt,SDL_Joystick *joystick)
             for(i = 0; i < carteJeu.nb_ennemi; i++)     //deplacement de tout les ennemis
                 deplace_ennemi(&tabEnnemi[i],carteJeu,screen,perso1);
 
-            //Affiche la versin en cour
+            //Affiche la version en cours
             versionTexte();
 
             SDL_Flip(screen);
