@@ -127,36 +127,30 @@ void ennemi_tire(Ennemi *ennemie1,Perso perso1,Map carte,SDL_Surface *screen)
 /*
     test de collision entre le perso les ennemis et les blasters
 */
-void test_collision_ennemi(Ennemi *ennemi1,Perso *perso1,Balle *mario_tire,int nb_ennemi,int nbr_balle,int *realloc_ennemi,int *realloc_balle,Map *carte,int *a_atteri,int *continuer,Joueur *joueur,SDL_Surface *screen)
+void test_collision_ennemi(Ennemi **ennemi1,Perso *perso1,Balle **mario_tire,int *nbr_balle,Map *carte,int *a_atteri,int *continuer,Joueur *joueur,SDL_Surface *screen)
 {
-    int i,j,retour;
+    int i,j,k,retour;
     //boucle pour tester tt les ennemis
-    for(i = 0; i < nb_ennemi; i++)
+    for(i = 0; i < carte->nb_ennemi; i++)
     {
-        //boucle pour tester les blasters par rapport aux ennemis
-        for(j = 0; j < nbr_balle; j++)
-        {
-            ennemi1[i].positionE.x -= carte->xscroll;   //reajustement par rapport au scrolling
-            ennemi1[i].positionE.y -= carte->yscroll;
-            if(collision_bloque(mario_tire[j].positionB,ennemi1[i].positionE) != 0)  //test de collision entre le bloc ennemi et le bloc blaster
-            {
-                *realloc_ennemi = i+1;  //si ils sont en collision alors on supprime les 2 blocs
-                *realloc_balle = i+1;
-            }
-            ennemi1[i].positionE.x += carte->xscroll;   //retour aux vraies valeurs
-            ennemi1[i].positionE.y += carte->yscroll;
-        }
         //test collision ennemi et perso
-        ennemi1[i].positionE.x -= carte->xscroll;   //reajustement par rapport au scrolling
-        ennemi1[i].positionE.y -= carte->yscroll+5;
-        retour = collision_bloque(ennemi1[i].positionE,perso1->positionP);
+        ennemi1[0][i].positionE.x -= carte->xscroll;   //reajustement par rapport au scrolling
+        ennemi1[0][i].positionE.y -= carte->yscroll+5;
+        retour = collision_bloque(ennemi1[0][i].positionE,perso1->positionP);
         if(retour != 0)    //test collision entre bloc perso et bloc ennemi
         {
-            ennemi1[i].positionE.x += carte->xscroll;
-            ennemi1[i].positionE.y += carte->yscroll+5;
-            if(retour == 1 || retour == 2)
+            ennemi1[0][i].positionE.x += carte->xscroll;
+            ennemi1[0][i].positionE.y += carte->yscroll+5;
+            if(perso1->sensyp > 0 && (retour == 1 || retour == 2))
             {
-                *realloc_ennemi = i+1;      //si ils sont en collision alors on supprime l'ennemi
+                joueur->score += 20;
+                for(k = i+1; k < (carte->nb_ennemi); k++)
+                {
+                    ennemi1[0][k-1] = ennemi1[0][k];  //deplacement du tableau pour ecraser l'ennemi a supprimer
+                }
+                carte->nb_ennemi--;
+                ennemi1[0] = (Ennemi*)realloc(ennemi1[0],(carte->nb_ennemi)*sizeof(Ennemi));    //reallocation du tab d'ennemi
+                i--;
             }
             else
             {
@@ -170,8 +164,38 @@ void test_collision_ennemi(Ennemi *ennemi1,Perso *perso1,Balle *mario_tire,int n
         }
         else
         {
-            ennemi1[i].positionE.x += carte->xscroll;
-            ennemi1[i].positionE.y += carte->yscroll+5;
+            ennemi1[0][i].positionE.x += carte->xscroll;
+            ennemi1[0][i].positionE.y += carte->yscroll+5;
+            //boucle pour tester les blasters par rapport aux ennemis
+            for(j = 0; j < (*nbr_balle); j++)
+            {
+                ennemi1[0][i].positionE.x -= carte->xscroll;   //reajustement par rapport au scrolling
+                ennemi1[0][i].positionE.y -= carte->yscroll;
+                if(collision_bloque(mario_tire[0][j].positionB,ennemi1[0][i].positionE) != 0)  //test de collision entre le bloc ennemi et le bloc blaster
+                {
+                    joueur->score += 20;
+                    for(k = i+1; k < (carte->nb_ennemi); k++)
+                    {
+                        ennemi1[0][k-1] = ennemi1[0][k];  //deplacement du tableau pour ecraser l'ennemi a supprimer
+                    }
+                    carte->nb_ennemi--;
+                    ennemi1[0] = (Ennemi*)realloc(ennemi1[0],(carte->nb_ennemi)*sizeof(Ennemi));    //reallocation du tab d'ennemi
+                    i--;
+
+                    for(k = j+1; k < (*nbr_balle); k++)
+                    {
+                        mario_tire[0][k-1] = mario_tire[0][k];    //deplacement du tableau pour ecraser la balle a supprimer
+                    }
+                    (*nbr_balle)--;
+                    mario_tire[0] = (Balle*)realloc(mario_tire[0],(*nbr_balle)*sizeof(Balle)); // reallocation du tableau de blaster
+                    j--;
+                }
+                else
+                {
+                    ennemi1[0][i].positionE.x += carte->xscroll;   //retour aux vraies valeurs
+                    ennemi1[0][i].positionE.y += carte->yscroll;
+                }
+            }
         }
     }
 }

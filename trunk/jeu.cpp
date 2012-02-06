@@ -121,7 +121,7 @@ void jeu(SDL_Surface* screen,Map carteJeu, ParamMap opt,SDL_Joystick *joystick)
     perso1.dir = 0;
     //MatHack: Permet de positionner le joueur en fonction de la lettre dans le fichier map
     initPosPerso(&perso1,&carteJeu,screen);
-    int nbr_balle = 0,cpt_balle = 0,new_balle = 0,realloc_balle = 0,realloc_ennemi = 0,reiinit_ennemi = 0;
+    int nbr_balle = 0,cpt_balle = 0,new_balle = 0,reiinit_ennemi = 0;
     Balle *mario_tire = (Balle*)malloc(sizeof(Balle));
     int jetPack = 0,cptJetPack = DUREE_JET_PACK;
     //initialisation du tableau dynamique d'ennemi
@@ -289,7 +289,7 @@ void jeu(SDL_Surface* screen,Map carteJeu, ParamMap opt,SDL_Joystick *joystick)
                     retour = test_collision(perso1.positionP,&carteJeu,0,0,NULL,&perso1,0);
                 }
             }
-            affiche_laser(mario_tire,&nbr_balle,&carteJeu,screen,&realloc_balle, perso1,&j);    //affichage du blaster
+            affiche_laser(&mario_tire,&nbr_balle,&carteJeu,screen, perso1,&j);    //affichage du blaster
             for(i = 0; i < carteJeu.nb_ennemi; i++)     //deplacement de tout les ennemis
                 deplace_ennemi(&tabEnnemi[i],carteJeu,screen,perso1);
 
@@ -298,7 +298,7 @@ void jeu(SDL_Surface* screen,Map carteJeu, ParamMap opt,SDL_Joystick *joystick)
 
             SDL_Flip(screen);
 
-            gestion_touche(&perso1, &carteJeu, &continuer,&a_atteri,&touche_enfonce,&touche_a_ete_enfonce,&new_balle,&cpt_balle,&jetPack,&cptJetPack,joystick,&joystickTouche);
+            gestion_touche(&perso1, &carteJeu, &continuer,&a_atteri,&touche_enfonce,&touche_a_ete_enfonce,&new_balle,&cpt_balle,&jetPack,&cptJetPack,joystick,&joystickTouche,&mario_tire,&nbr_balle);
             if(jetPack==1 && a_atteri == 1)
             {
                 tempsMusique2 = SDL_GetTicks();
@@ -311,6 +311,7 @@ void jeu(SDL_Surface* screen,Map carteJeu, ParamMap opt,SDL_Joystick *joystick)
             if(new_balle==1)
             {
                 FMOD_System_PlaySound(system, FMOD_CHANNEL_FREE, tir, 0, NULL);
+                new_balle = 0;
             }
             deplace_mario(&perso1,&carteJeu,decalage,screen,&a_atteri,&j,&continuer,system,piece,&s,tabEnnemi,&reiinit_ennemi);
             if(reiinit_ennemi)
@@ -321,7 +322,7 @@ void jeu(SDL_Surface* screen,Map carteJeu, ParamMap opt,SDL_Joystick *joystick)
                     initEnnemi(carteJeu,&tabEnnemi[i],i,screen);
                 reiinit_ennemi = 0;
             }
-            test_collision_ennemi(tabEnnemi,&perso1,mario_tire,carteJeu.nb_ennemi,nbr_balle,&realloc_ennemi,&realloc_balle,&carteJeu,&a_atteri,&continuer,&j,screen);  //test de collision entre perso ennemis et blaster
+            test_collision_ennemi(&tabEnnemi,&perso1,&mario_tire,&nbr_balle,&carteJeu,&a_atteri,&continuer,&j,screen);  //test de collision entre perso ennemis et blaster
             touche_a_ete_enfonce = 0;
             if(perso1.dir == 0)
                 perso1.frameActu = 0;
@@ -335,62 +336,6 @@ void jeu(SDL_Surface* screen,Map carteJeu, ParamMap opt,SDL_Joystick *joystick)
                 {
                     cptJetPack = 0;
                 }
-            }
-            if(realloc_balle != 0)  //suppression d'un blaster n°realloc_balle dans le tableau des blasters
-            {
-                nbr_balle--;
-                for(i = realloc_balle; i < (nbr_balle); i++)
-                {
-                    mario_tire[i-1] = mario_tire[i];    //deplacement du tableau pour ecraser la balle a supprimer
-                }
-                mario_tire = (Balle*)realloc(mario_tire,(nbr_balle)*sizeof(Balle)); // reallocation du tableau de blaster
-                realloc_balle = 0;
-            }
-            if(realloc_ennemi != 0) //suppression d'un ennemi n°realloc_ennemi dans le tab des ennemis
-            {
-                carteJeu.nb_ennemi--;
-                j.score += 20;
-                for(i = realloc_ennemi; i < (carteJeu.nb_ennemi+1); i++)
-                {
-                    tabEnnemi[i-1] = tabEnnemi[i];  //deplacement du tableau pour ecraser l'ennemi a supprimer
-                }
-                tabEnnemi = (Ennemi*)realloc(tabEnnemi,(carteJeu.nb_ennemi)*sizeof(Ennemi));    //reallocation du tab d'ennemi
-                realloc_ennemi = 0;
-            }
-            if(new_balle == 1 && perso1.dir != 0)      //ajout d'un blaster (tir)
-            {
-                nbr_balle++;
-                mario_tire = (Balle*)realloc(mario_tire,(nbr_balle)*sizeof(Balle)); //realloc tab avec 1 case en plus
-                mario_tire[nbr_balle-1].positionB.x = perso1.positionP.x;   //init du X blaster a la valeur du X du perso
-                if(perso1.dir < 0)      //si le perso va vers la gauche
-                {
-                    mario_tire[nbr_balle-1].vitesseX = perso1.dir*10;       //init vitesse
-                    //Tire en diagonale désactiver pour le moment
-                    //if(a_atteri == 1)
-                    // mario_tire[nbr_balle-yscroll1].vitesseY = -10;     //si le perso est en l'air on tire en diagonale
-                    //else
-                    //mario_tire[nbr_balle-1].vitesseY = 0;   //sinon tire horizontale
-                    mario_tire[nbr_balle-1].positionB.y = perso1.positionP.y+8;    //init du Y du blaster
-                    mario_tire[nbr_balle-1].positionB.x -= 20;      //-20 pour le design
-                    mario_tire[nbr_balle-1].imageBalle = (char*)"image/perso/blaster_tire_g.gif";
-                }
-                else if(perso1.dir > 0) //si le perso va vers la droite
-                {
-                    mario_tire[nbr_balle-1].vitesseX = perso1.dir*10;
-                    mario_tire[nbr_balle-1].positionB.x += 50;
-                    //Tire en diagonale désactiver pour le moment
-                    //if(a_atteri == 1)
-                    // mario_tire[nbr_balle-1].vitesseY = -10;
-                    //else
-                    //mario_tire[nbr_balle-1].vitesseY = 0;
-                    mario_tire[nbr_balle-1].positionB.y = perso1.positionP.y+8;
-                    mario_tire[nbr_balle-1].imageBalle = (char*)"image/perso/blaster_tire_d.gif";
-                }
-                mario_tire[nbr_balle-1].balleSprite = IMG_Load(mario_tire[nbr_balle-1].imageBalle); //chargement de l'image
-                associer_surface_pos(mario_tire[nbr_balle-1].balleSprite,&mario_tire[nbr_balle-1].positionB);
-                cpt_balle = 0;
-                new_balle = 0;
-
             }
             if((touche_enfonce != -1 && touche_enfonce != 1))   //si l'utilisateur n'appuie pas sur gauche ou droite
             {

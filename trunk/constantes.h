@@ -24,7 +24,7 @@
 #define     bandeJeuBas         0
 
 #define     FRAMERATE   5 //50 fps
-#define     FRAMERATE_BALLE 5
+#define     FRAMERATE_BALLE 100
 #define     LTILE   32
 #define     HTILE   32
 #define     DUREE_JET_PACK 125
