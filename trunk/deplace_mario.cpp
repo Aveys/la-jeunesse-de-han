@@ -202,6 +202,7 @@ void gestion_touche(Perso *perso1, Map *carte, int *continuer,int *a_atteri,int 
                 perso1->frameActu = 1;
             }
             *a_atteri = 1;
+            perso1->dir = 0;
             break;
         case SDLK_SPACE:
             if(*cpt_balle > FRAMERATE_BALLE)    //creation d'un nouveau tir
