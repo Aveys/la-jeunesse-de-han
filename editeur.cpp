@@ -594,7 +594,7 @@ int SDLMessageBox(char *str)
     posRect.y = screen->h/2 - rectangle->h/2;
     SDL_BlitSurface(rectangle, NULL, screen, &posRect);
     TTF_Font *police = TTF_OpenFont("calibri.ttf", 15);
-    SDL_Color couleurNoire = {0, 0, 0},couleurBlanche = {190,190,190},couleurRouge = {255,0,0},couleurTexteNon = {0,0,0},couleurTexteOui = {0,0,0};
+    SDL_Color couleurNoire = {0, 0, 0},couleurBlanche = {190,190,190},couleurRouge = {255,0,0},couleurTexteNon = {255,0,0},couleurTexteOui = {0,0,0};
     texteStr = TTF_RenderText_Shaded(police,str,couleurNoire,couleurBlanche);
     posTexteStr.x = posRect.x+5;
     posTexteStr.y = posRect.y+10;

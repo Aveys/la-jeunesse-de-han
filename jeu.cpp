@@ -357,7 +357,7 @@ void jeu(SDL_Surface* screen,Map carteJeu, ParamMap opt,SDL_Joystick *joystick)
                 tabEnnemi = (Ennemi*)realloc(tabEnnemi,(carteJeu.nb_ennemi)*sizeof(Ennemi));    //reallocation du tab d'ennemi
                 realloc_ennemi = 0;
             }
-            if(new_balle == 1)      //ajout d'un blaster (tir)
+            if(new_balle == 1 && perso1.dir != 0)      //ajout d'un blaster (tir)
             {
                 nbr_balle++;
                 mario_tire = (Balle*)realloc(mario_tire,(nbr_balle)*sizeof(Balle)); //realloc tab avec 1 case en plus
