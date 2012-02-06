@@ -49,19 +49,24 @@ void decoupePerso(Perso *perso1)
     }
 }
 
-void affiche_laser(Balle *tire_mario,int *nb_balle,Map *carte,SDL_Surface *screen,int *realloc_tire, Perso player,Joueur *joueur1)
+void affiche_laser(Balle **tire_mario,int *nb_balle,Map *carte,SDL_Surface *screen, Perso player,Joueur *joueur1)
 {
     //Decoupage sprite
     //image 1
-    int i;
+    int i,j;
     for(i = 0; i < (*nb_balle); i++)
     {
-        SDL_BlitSurface(tire_mario[i].balleSprite, &player.posSpriteBlaster[player.frameBlaster], screen, &tire_mario[i].positionB);
-        tire_mario[i].positionB.x += tire_mario[i].vitesseX;
+        SDL_BlitSurface(tire_mario[0][i].balleSprite, &player.posSpriteBlaster[player.frameBlaster], screen, &tire_mario[0][i].positionB);
+        tire_mario[0][i].positionB.x += tire_mario[0][i].vitesseX;
         //tire_mario[i].positionB.y += tire_mario[i].vitesseY;
-        if(test_collision(tire_mario[i].positionB,carte,2,0,joueur1,&player,1) != 0)
+        if(test_collision(tire_mario[0][i].positionB,carte,2,0,joueur1,&player,1) != 0 || tire_mario[0][i].positionB.x <= 0 || tire_mario[0][i].positionB.x > screen->w)
         {
-            *realloc_tire = i+1;
+            (*nb_balle)--;
+            for(j = i+1; j < (*nb_balle); j++)
+            {
+                tire_mario[0][j-1] = tire_mario[0][j];    //deplacement du tableau pour ecraser la balle a supprimer
+            }
+            tire_mario[0] = (Balle*)realloc(tire_mario[0],(*nb_balle)*sizeof(Balle)); // reallocation du tableau de blaster
         }
         else
         {
@@ -75,7 +80,7 @@ void affiche_laser(Balle *tire_mario,int *nb_balle,Map *carte,SDL_Surface *scree
 /*
     Gere les events de clavier : droite/gauche/haut/bas du perso + le blaster + le tir et le jet pack
 */
-void gestion_touche(Perso *perso1, Map *carte, int *continuer,int *a_atteri,int *touche_enfonce,int *touche_a_ete_enfonce,int *new_balle,int *cpt_balle,int *jetPack,int *cptJetPack,SDL_Joystick *joystick,int *joystiskTouche)
+void gestion_touche(Perso *perso1, Map *carte, int *continuer,int *a_atteri,int *touche_enfonce,int *touche_a_ete_enfonce,int *new_balle,int *cpt_balle,int *jetPack,int *cptJetPack,SDL_Joystick *joystick,int *joystiskTouche,Balle **tire_mario,int *nb_balle)
 {
     if(*joystiskTouche == 1)
     {
@@ -149,9 +154,39 @@ void gestion_touche(Perso *perso1, Map *carte, int *continuer,int *a_atteri,int 
     case SDL_JOYBUTTONDOWN:
         if (event.jbutton.button == 0)
         {
-            if(*cpt_balle > FRAMERATE_BALLE)    //creation d'un nouveau tir
+            if(*cpt_balle > FRAMERATE_BALLE && perso1->dir != 0)    //creation d'un nouveau tir
             {
-                *new_balle = 1;
+                (*nb_balle)++;
+                tire_mario[0] = (Balle*)realloc(tire_mario[0],(*nb_balle)*sizeof(Balle)); //realloc tab avec 1 case en plus
+                tire_mario[0][*nb_balle-1].positionB.x = perso1->positionP.x;   //init du X blaster a la valeur du X du perso
+                if(perso1->dir < 0)      //si le perso va vers la gauche
+                {
+                    tire_mario[0][*nb_balle-1].vitesseX = perso1->dir*10;       //init vitesse
+                    //Tire en diagonale désactiver pour le moment
+                    //if(a_atteri == 1)
+                    // mario_tire[0][*nb_balle-yscroll1].vitesseY = -10;     //si le perso est en l'air on tire en diagonale
+                    //else
+                    //tire_mario[0][*nb_balle-1].vitesseY = 0;   //sinon tire horizontale
+                    tire_mario[0][*nb_balle-1].positionB.y = perso1->positionP.y+8;    //init du Y du blaster
+                    tire_mario[0][*nb_balle-1].positionB.x -= 20;      //-20 pour le design
+                    tire_mario[0][*nb_balle-1].imageBalle = (char*)"image/perso/blaster_tire_g.gif";
+                }
+                else if(perso1->dir > 0) //si le perso va vers la droite
+                {
+                    tire_mario[0][*nb_balle-1].vitesseX = perso1->dir*10;
+                    tire_mario[0][*nb_balle-1].positionB.x += 50;
+                    //Tire en diagonale désactiver pour le moment
+                    //if(a_atteri == 1)
+                    // tire_mario[0][*nb_balle-1].vitesseY = -10;
+                    //else
+                    //tire_mario[0][*nb_balle-1].vitesseY = 0;
+                    tire_mario[0][*nb_balle-1].positionB.y = perso1->positionP.y+8;
+                    tire_mario[0][*nb_balle-1].imageBalle = (char*)"image/perso/blaster_tire_d.gif";
+                }
+                tire_mario[0][*nb_balle-1].balleSprite = IMG_Load(tire_mario[0][*nb_balle-1].imageBalle); //chargement de l'image
+                associer_surface_pos(tire_mario[0][*nb_balle-1].balleSprite,&tire_mario[0][*nb_balle-1].positionB);
+                cpt_balle = 0;
+                *new_balle=1;
             }
         }
         else if (event.jbutton.button == 1)
@@ -205,9 +240,39 @@ void gestion_touche(Perso *perso1, Map *carte, int *continuer,int *a_atteri,int 
             perso1->dir = 0;
             break;
         case SDLK_SPACE:
-            if(*cpt_balle > FRAMERATE_BALLE)    //creation d'un nouveau tir
+            if(*cpt_balle > FRAMERATE_BALLE && perso1->dir != 0)    //creation d'un nouveau tir
             {
-                *new_balle = 1;
+                (*nb_balle)++;
+                tire_mario[0] = (Balle*)realloc(tire_mario[0],(*nb_balle)*sizeof(Balle)); //realloc tab avec 1 case en plus
+                tire_mario[0][*nb_balle-1].positionB.x = perso1->positionP.x;   //init du X blaster a la valeur du X du perso
+                if(perso1->dir < 0)      //si le perso va vers la gauche
+                {
+                    tire_mario[0][*nb_balle-1].vitesseX = perso1->dir*10;       //init vitesse
+                    //Tire en diagonale désactiver pour le moment
+                    //if(a_atteri == 1)
+                    // mario_tire[0][*nb_balle-yscroll1].vitesseY = -10;     //si le perso est en l'air on tire en diagonale
+                    //else
+                    //tire_mario[0][*nb_balle-1].vitesseY = 0;   //sinon tire horizontale
+                    tire_mario[0][*nb_balle-1].positionB.y = perso1->positionP.y+8;    //init du Y du blaster
+                    tire_mario[0][*nb_balle-1].positionB.x -= 20;      //-20 pour le design
+                    tire_mario[0][*nb_balle-1].imageBalle = (char*)"image/perso/blaster_tire_g.gif";
+                }
+                else if(perso1->dir > 0) //si le perso va vers la droite
+                {
+                    tire_mario[0][*nb_balle-1].vitesseX = perso1->dir*10;
+                    tire_mario[0][*nb_balle-1].positionB.x += 50;
+                    //Tire en diagonale désactiver pour le moment
+                    //if(a_atteri == 1)
+                    // tire_mario[0][*nb_balle-1].vitesseY = -10;
+                    //else
+                    //tire_mario[0][*nb_balle-1].vitesseY = 0;
+                    tire_mario[0][*nb_balle-1].positionB.y = perso1->positionP.y+8;
+                    tire_mario[0][*nb_balle-1].imageBalle = (char*)"image/perso/blaster_tire_d.gif";
+                }
+                tire_mario[0][*nb_balle-1].balleSprite = IMG_Load(tire_mario[0][*nb_balle-1].imageBalle); //chargement de l'image
+                associer_surface_pos(tire_mario[0][*nb_balle-1].balleSprite,&tire_mario[0][*nb_balle-1].positionB);
+                cpt_balle = 0;
+                *new_balle=1;
             }
             break;
         case SDLK_RIGHT:
@@ -803,8 +868,8 @@ int test_collision(SDL_Rect surface_a_tester,Map *carte,int opt,int opt2,Joueur 
                 case tileBONUS:     //si il a attraper un bonus
                     /*if(i != posymax || perso1->sensyp < 0)    //si il a taper avec la tete
                     {*/
-                        carte->tableauMap[i-1][j-1] = 0;    //suppression de la case
-                        return BONUS;
+                    carte->tableauMap[i-1][j-1] = 0;    //suppression de la case
+                    return BONUS;
                     /*}
                     else if(i == posymax)    //si la case est sur le bas du perso alors il atteri
                     {

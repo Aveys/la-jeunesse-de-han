@@ -507,7 +507,7 @@
 	"constantes.h"
 	"menu.h"
 
-1328454248 c:\users\thomas\documents\ap2 projet mario\mario star wars google code\constantes.h
+1328561615 c:\users\thomas\documents\ap2 projet mario\mario star wars google code\constantes.h
 	<cstdlib>
 	<cstdio>
 	<ctime>
@@ -539,7 +539,7 @@
 	"deplace_mario.h"
 	"map.h"
 
-1328215487 c:\users\thomas\documents\ap2 projet mario\mario star wars google code\deplace_mario.h
+1328566344 c:\users\thomas\documents\ap2 projet mario\mario star wars google code\deplace_mario.h
 	"constantes.h"
 	"map.h"
 	<fmodex/fmod.h>
@@ -553,7 +553,7 @@
 
 1327869836 c:\users\thomas\documents\ap2 projet mario\mario star wars google code\highscore.h
 
-1328452225 source:c:\users\thomas\documents\ap2 projet mario\mario star wars google code\jeu.cpp
+1328566404 source:c:\users\thomas\documents\ap2 projet mario\mario star wars google code\jeu.cpp
 	<ctime>
 	<cstdio>
 	<cstdlib>
@@ -567,7 +567,7 @@
 	"editeur.h"
 	<fmodex/fmod.h>
 
-1327869988 c:\users\thomas\documents\ap2 projet mario\mario star wars google code\ennemie.h
+1328566180 c:\users\thomas\documents\ap2 projet mario\mario star wars google code\ennemie.h
 	"constantes.h"
 	"deplace_mario.h"
 
@@ -609,12 +609,12 @@
 	"menu.h"
 	"reglages.h"
 
-1328454044 source:c:\users\thomas\documents\ap2 projet mario\mario star wars google code\ennemie.cpp
+1328566180 source:c:\users\thomas\documents\ap2 projet mario\mario star wars google code\ennemie.cpp
 	"jeu.h"
 	"ennemie.h"
 	<math.h>
 
-1328545024 source:c:\users\thomas\documents\ap2 projet mario\mario star wars google code\deplace_mario.cpp
+1328566344 source:c:\users\thomas\documents\ap2 projet mario\mario star wars google code\deplace_mario.cpp
 	<cstdlib>
 	<stdlib.h>
 	<SDL/SDL.h>
