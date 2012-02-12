@@ -94,7 +94,7 @@ void jeu(SDL_Surface* screen,Map carteJeu, ParamMap opt,SDL_Joystick *joystick)
     fond = IMG_Load("image/map/fondV4.gif");
 
     options.afficheGrille = 1;
-    nouvellePartie(screen, &j, &s);
+    nouvellePartie(screen, &j, &s,joystick);
 
     FMOD_SYSTEM *system;
     FMOD_System_Create(&system);
@@ -410,13 +410,13 @@ void affichageFonduJeu(SDL_Surface *ecran, int temps, int *fonduOk, Map carte, P
 
 }
 
-void nouvellePartie(SDL_Surface* screen, Joueur *j, Score *sc)
+void nouvellePartie(SDL_Surface* screen, Joueur *j, Score *sc,SDL_Joystick *joystick)
 {
     int doublon=0;
     do
     {
         doublon=0;
-        enregistrerJoueur(j, screen);
+        enregistrerJoueur(j, screen,joystick);
     }
     while(doublon == 1);
     j->nbvie=3;
@@ -426,7 +426,7 @@ void nouvellePartie(SDL_Surface* screen, Joueur *j, Score *sc)
     j->score=0;
 }
 
-void enregistrerJoueur(Joueur *j, SDL_Surface* screen)
+void enregistrerJoueur(Joueur *j, SDL_Surface* screen,SDL_Joystick *joystick)
 {
     TTF_Font *police=NULL,*police2=NULL;
     SDL_Surface *texte=NULL;
@@ -436,7 +436,7 @@ void enregistrerJoueur(Joueur *j, SDL_Surface* screen)
     int numlettre=1;
     SDL_Event event;
     char pseudo[4]="AAA";
-    int continuer=1;
+    int continuer=1,dir = 0,tempsActuel = 0,tempsPrecedent = 0,entree = 0;
     //police = TTF_OpenFont("pix.ttf", 60);
     police = TTF_OpenFont("pix.ttf", 60);
     police2 = TTF_OpenFont("calibri.ttf", 30);
@@ -465,137 +465,152 @@ void enregistrerJoueur(Joueur *j, SDL_Surface* screen)
     positionCaraActif.y = screen->h/2 - (60); //MatHack : Moitier de la fenetre - moitier du Texte = centrer
     positionCaraActif.x = screen->w/2 - ((3*60)/2.8);
     //MatHack:Ce flip sert à rien, surcharge
-    SDL_EnableKeyRepeat(100,100);
     while(continuer)
     {
-
-        SDL_WaitEvent(&event);
+        tempsActuel = SDL_GetTicks();
+        if (tempsActuel - tempsPrecedent < 50)
+        {
+            SDL_Delay(50-(tempsActuel - tempsPrecedent));
+        }
+        tempsPrecedent= SDL_GetTicks();
+        if(dir > 0)
+        {
+            switch(numlettre)
+            {
+            case 1:
+                switch(lettre1)
+                {
+                case 'A':
+                    lettre1='9';
+                    break;
+                case '1':
+                    lettre1='z';
+                    break;
+                case 'a':
+                    lettre1='Z';
+                    break;
+                default:
+                    lettre1--;
+                    break;
+                }
+                break;
+            case 2:
+                switch(lettre2)
+                {
+                case 'A':
+                    lettre2='9';
+                    break;
+                case '1':
+                    lettre2='z';
+                    break;
+                case 'a':
+                    lettre2='Z';
+                    break;
+                default:
+                    lettre2--;
+                    break;
+                }
+                break;
+            case 3:
+                switch(lettre3)
+                {
+                case 'A':
+                    lettre3='9';
+                    break;
+                case '1':
+                    lettre3='z';
+                    break;
+                case 'a':
+                    lettre3='Z';
+                    break;
+                default:
+                    lettre3--;
+                    break;
+                }
+                break;
+            default:
+                break;
+            }
+        }
+        else if(dir < 0)
+        {
+            switch(numlettre)
+            {
+            case 1:
+                switch(lettre1) //ALgo pour n'afficher que les majuscules, les minuscules et les chiffres.
+                {
+                case 'Z':
+                    lettre1='a';
+                    break;
+                case 'z':
+                    lettre1='1';
+                    break;
+                case '9':
+                    lettre1='A';
+                    break;
+                default:
+                    lettre1++;
+                    break;
+                }
+                break;
+            case 2:
+                switch(lettre2)
+                {
+                case 'Z':
+                    lettre2='a';
+                    break;
+                case 'z':
+                    lettre2='1';
+                    break;
+                case '9':
+                    lettre2='A';
+                    break;
+                default:
+                    lettre2++;
+                    break;
+                }
+                break;
+            case 3:
+                switch(lettre3)
+                {
+                case 'Z':
+                    lettre3='a';
+                    break;
+                case 'z':
+                    lettre3='1';
+                    break;
+                case '9':
+                    lettre3='A';
+                    break;
+                default:
+                    lettre3++;
+                    break;
+                }
+                break;
+            default:
+                break;
+            }
+        }
+        SDL_PollEvent(&event);
         switch(event.type)
         {
         case SDL_QUIT:
             TTF_Quit();
             SDL_Quit();
+            exit(0);
             break;
-        case SDL_KEYDOWN:
-            switch(event.key.keysym.sym)
+        case SDL_JOYBUTTONDOWN:
+            if((event.jbutton.button == 6 || event.jbutton.button == 4) && entree == 0)
             {
-            case SDLK_UP:
-                switch(numlettre)
+                if(numlettre > 1)
                 {
-                case 1:
-                    switch(lettre1) //ALgo pour n'afficher que les majuscules, les minuscules et les chiffres.
-                    {
-                    case 'Z':
-                        lettre1='a';
-                        break;
-                    case 'z':
-                        lettre1='1';
-                        break;
-                    case '9':
-                        lettre1='A';
-                        break;
-                    default:
-                        lettre1++;
-                        break;
-                    }
-                    break;
-                case 2:
-                    switch(lettre2)
-                    {
-                    case 'Z':
-                        lettre2='a';
-                        break;
-                    case 'z':
-                        lettre2='1';
-                        break;
-                    case '9':
-                        lettre2='A';
-                        break;
-                    default:
-                        lettre2++;
-                        break;
-                    }
-                    break;
-                case 3:
-                    switch(lettre3)
-                    {
-                    case 'Z':
-                        lettre3='a';
-                        break;
-                    case 'z':
-                        lettre3='1';
-                        break;
-                    case '9':
-                        lettre3='A';
-                        break;
-                    default:
-                        lettre3++;
-                        break;
-                    }
-                    break;
-                default:
-                    break;
+                    positionCaraActif.x -= 50;
+                    numlettre--;
                 }
-                break;
-            case SDLK_DOWN:
-                switch(numlettre)
-                {
-                case 1:
-                    switch(lettre1)
-                    {
-                    case 'A':
-                        lettre1='9';
-                        break;
-                    case '1':
-                        lettre1='z';
-                        break;
-                    case 'a':
-                        lettre1='Z';
-                        break;
-                    default:
-                        lettre1--;
-                        break;
-                    }
-                    break;
-                case 2:
-                    switch(lettre2)
-                    {
-                    case 'A':
-                        lettre2='9';
-                        break;
-                    case '1':
-                        lettre2='z';
-                        break;
-                    case 'a':
-                        lettre2='Z';
-                        break;
-                    default:
-                        lettre2--;
-                        break;
-                    }
-                    break;
-                case 3:
-                    switch(lettre3)
-                    {
-                    case 'A':
-                        lettre3='9';
-                        break;
-                    case '1':
-                        lettre3='z';
-                        break;
-                    case 'a':
-                        lettre3='Z';
-                        break;
-                    default:
-                        lettre3--;
-                        break;
-                    }
-                    break;
-                default:
-                    break;
-                }
-                break;
-            case SDLK_RETURN: // Quand on appuie sur espace, on change de lettre, une fois toutes les lettres passées on quitte
+                entree = 1;
+            }
+            else if((event.jbutton.button == 7 || event.jbutton.button == 5) && entree == 0)
+            {
                 if(numlettre < 3)
                 {
                     positionCaraActif.x += 50;
@@ -603,6 +618,109 @@ void enregistrerJoueur(Joueur *j, SDL_Surface* screen)
                 }
                 else
                     continuer=0;
+                entree = 1;
+            }
+            break;
+        case SDL_JOYBUTTONUP:
+            if(event.jbutton.button == 7 || event.jbutton.button == 6 || event.jbutton.button == 5 || event.jbutton.button == 4)
+                entree = 0;
+            break;
+        case SDL_JOYAXISMOTION:
+            //fprintf(stderr,"%i,%i\n",SDL_JoystickGetAxis(joystick,0),SDL_JoystickGetAxis(joystick,1));
+            if(SDL_JoystickGetAxis(joystick,0) < -JOY)
+            {
+                // Vers la gauche
+            }
+            else if(SDL_JoystickGetAxis(joystick,0) > JOY)
+            {
+                // Vers la droite
+            }
+            if(event.jaxis.axis == 1 && SDL_JoystickGetAxis(joystick,1) < -JOY)
+            {
+                // Vers le haut
+                dir = -1;
+            }
+            else if(event.jaxis.axis == 1 && SDL_JoystickGetAxis(joystick,1) > JOY)
+            {
+                // Vers le bas
+                dir = 1;
+            }
+            else
+                dir = 0;
+            break;
+        case SDL_JOYHATMOTION:
+            if ( event.jhat.value & SDL_HAT_UP )
+                dir = -1;
+            else if ( event.jhat.value & SDL_HAT_DOWN )
+                dir = 1;
+            else
+                dir = 0;
+            break;
+        case SDL_KEYDOWN:
+            switch(event.key.keysym.sym)
+            {
+            case SDLK_UP:
+                dir = -1;
+                break;
+            case SDLK_DOWN:
+                dir = 1;
+                break;
+            case SDLK_RETURN:
+                if(entree == 0)
+                {
+                    if(numlettre < 3)
+                    {
+                        positionCaraActif.x += 50;
+                        numlettre++;
+                    }
+                    else
+                        continuer=0;
+                }
+                break;
+            case SDLK_RIGHT:
+                if(entree == 0)
+                {
+                    if(numlettre < 3)
+                    {
+                        positionCaraActif.x += 50;
+                        numlettre++;
+                    }
+                    else
+                        continuer=0;
+                }
+                break;
+            case SDLK_LEFT:
+                if (entree == 0)
+                {
+                    if(numlettre > 1)
+                    {
+                        positionCaraActif.x -= 50;
+                        numlettre--;
+                    }
+                    entree = 1;
+                }
+                break;
+            default:
+                break;
+            }
+            break;
+        case SDL_KEYUP:
+            switch(event.key.keysym.sym)
+            {
+            case SDLK_UP:
+                dir = 0;
+                break;
+            case SDLK_DOWN:
+                dir = 0;
+                break;
+            case SDLK_RETURN:
+                entree = 0;
+                break;
+            case SDLK_LEFT:
+                entree = 0;
+                break;
+            case SDLK_RIGHT:
+                entree = 0;
                 break;
             default:
                 break;

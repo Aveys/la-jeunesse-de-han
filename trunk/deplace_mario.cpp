@@ -82,69 +82,12 @@ void affiche_laser(Balle **tire_mario,int *nb_balle,Map *carte,SDL_Surface *scre
 */
 void gestion_touche(Perso *perso1, Map *carte, int *continuer,int *a_atteri,int *touche_enfonce,int *touche_a_ete_enfonce,int *new_balle,int *cpt_balle,int *jetPack,int *cptJetPack,SDL_Joystick *joystick,int *joystiskTouche,Balle **tire_mario,int *nb_balle)
 {
-    if(*joystiskTouche == 1)
-    {
-        // Vers la gauche
-        perso1->sensxp = -perso1->vitesse;      //perso va vers la gauche
-        perso1->ok++;
-        //perso1->frameActu = 9;
-        if(*touche_enfonce == 0)
-            perso1->ok = perso1->vitesseAnim;
-        if(perso1->ok >= perso1->vitesseAnim)
-        {
-            if(perso1->frameActu >= 15 || perso1->frameActu < 8)
-                perso1->frameActu = 8;
-            perso1->ok = 0;
-            perso1->frameActu += 1;
-        }
-        //carte->posFond.x +=5;
-        perso1->dir = -1;
-        *touche_enfonce = -1;
-
-    }
-    else if(*joystiskTouche == 2)
-    {
-        // Vers la droite
-        perso1->ok++;
-        //perso1->frameActu = 1;
-        if(*touche_enfonce == 0)
-            perso1->ok = perso1->vitesseAnim;
-        if(perso1->ok >= perso1->vitesseAnim)
-        {
-            if(perso1->frameActu >= 8)
-                perso1->frameActu = 1;
-            perso1->ok = 0;
-            perso1->frameActu += 1;
-
-        }
-        perso1->sensxp = perso1->vitesse;   //le perso va vers la droite
-        //carte->posFond.x -=5;
-        perso1->dir = 1;
-        *touche_enfonce = 1;    //sert pour la détection de 2 touches simultanement
-    }
-    else if(*joystiskTouche == 3)
-    {
-        // Vers le haut
-        if(*a_atteri == 0 || (*jetPack == 1 && *cptJetPack > 0))    //si il a atteri ou si le jet pack est actif alors on peut faire sauter le perso
-        {
-            perso1->sensyp = -8;
-            perso1->frameActu = 1;
-        }
-        *a_atteri = 1;
-
-    }
-    else if(*joystiskTouche == 4)
-    {
-
-        // Vers le bas
-        perso1->sensyp = 8;
-    }
     SDL_Event event;
     SDL_PollEvent(&event);
     switch (event.type)
     {
     case SDL_QUIT:
-        if(SDLMessageBox((char*)"Voulez vous quitter le jeu ?"))
+        if(SDLMessageBox((char*)"Voulez vous quitter le jeu ?",joystick))
         {
             TTF_Quit();
             SDL_Quit();
@@ -152,7 +95,7 @@ void gestion_touche(Perso *perso1, Map *carte, int *continuer,int *a_atteri,int 
         }
         break;
     case SDL_JOYBUTTONDOWN:
-        if (event.jbutton.button == 0)
+        if (event.jbutton.button == 5)
         {
             if(*cpt_balle > FRAMERATE_BALLE && perso1->dir != 0)    //creation d'un nouveau tir
             {
@@ -189,36 +132,26 @@ void gestion_touche(Perso *perso1, Map *carte, int *continuer,int *a_atteri,int 
                 *new_balle=1;
             }
         }
-        else if (event.jbutton.button == 1)
+        else if (event.jbutton.button == 6)
         {
             //retour menu
-            if(SDLMessageBox((char*)"Voulez vous retourner au menu ?"))
+            if(SDLMessageBox((char*)"Voulez vous retourner au menu ?",joystick))
             {
                 *continuer = 0;
             }
         }
-        else if (event.jbutton.button == 2)
+        else if (event.jbutton.button == 4)
         {
             //init jet pack
             *jetPack = 1;
         }
-        else if (event.jbutton.button == 10)
+        else if (event.jbutton.button == 7)
         {
             pause();
         }
-        else if (event.jbutton.button == 4)
-        {
-            /* Vers le haut */
-            if(*a_atteri == 0 || (*jetPack == 1 && *cptJetPack > 0))    //si il a atteri ou si le jet pack est actif alors on peut faire sauter le perso
-            {
-                perso1->sensyp = -8;
-                perso1->frameActu = 1;
-            }
-            *a_atteri = 1;
-        }
         break;
     case SDL_JOYBUTTONUP:
-        if (event.jbutton.button == 2)
+        if (event.jbutton.button == 4)
         {
             //init jet pack
             *jetPack = 0;
@@ -346,7 +279,7 @@ void gestion_touche(Perso *perso1, Map *carte, int *continuer,int *a_atteri,int 
             break;
             //MatHack: Demande si l'on veut quitter le jeu
         case SDLK_ESCAPE:   //retour menu
-            if(SDLMessageBox((char*)"Voulez vous retourner au menu ?"))
+            if(SDLMessageBox((char*)"Voulez vous retourner au menu ?",joystick))
                 *continuer = 0;
             break;
         case SDLK_c:        //init jet pack
@@ -372,63 +305,158 @@ void gestion_touche(Perso *perso1, Map *carte, int *continuer,int *a_atteri,int 
         }
         break;
     case SDL_JOYAXISMOTION:
-        if(SDL_NumJoysticks() > 0)
+        //fprintf(stderr,"%i,%i\n",SDL_JoystickGetAxis(joystick,0),SDL_JoystickGetAxis(joystick,1));
+        if(SDL_JoystickGetAxis(joystick,0) < -JOY)
         {
-            if (event.jaxis.axis == 0 && event.jaxis.value < -3200)
+            // Vers la gauche
+            perso1->sensxp = -perso1->vitesse;      //perso va vers la gauche
+            perso1->ok++;
+            //perso1->frameActu = 9;
+            if(*touche_enfonce == 0)
+                perso1->ok = perso1->vitesseAnim;
+            if(perso1->ok >= perso1->vitesseAnim)
             {
-                // Vers la gauche
-                perso1->sensxp = -perso1->vitesse;      //perso va vers la gauche
-                perso1->ok++;
-                //perso1->frameActu = 9;
-                if(perso1->ok >= perso1->vitesseAnim)
-                {
-                    if(perso1->frameActu >= 15)
-                        perso1->frameActu = 8;
-                    perso1->ok = 0;
-                    perso1->frameActu += 1;
-                }
-                //carte->posFond.x +=5;
-                perso1->dir = -1;
-                *joystiskTouche = 1;
+                if(perso1->frameActu >= 15 || perso1->frameActu < 8)
+                    perso1->frameActu = 8;
+                perso1->ok = 0;
+                perso1->frameActu += 1;
             }
-            else if (event.jaxis.axis == 0 && event.jaxis.value > 3200)
-            {
-                // Vers la droite
-                perso1->ok++;
-                //perso1->frameActu = 1;
-                if(perso1->ok >= perso1->vitesseAnim)
-                {
-                    if(perso1->frameActu >= 8)
-                        perso1->frameActu = 1;
-                    perso1->ok = 0;
-                    perso1->frameActu += 1;
+            //carte->posFond.x +=5;
+            perso1->dir = -1;
+            *touche_enfonce = -1;
 
-                }
-                perso1->sensxp = perso1->vitesse;   //le perso va vers la droite
-                //carte->posFond.x -=5;
-                perso1->dir = 1;
-                *joystiskTouche = 2;
-            }
-            else if (event.jaxis.axis == 1 && event.jaxis.value < -3200)
-            {
-                // Vers le haut
-                if(*a_atteri == 0 || (*jetPack == 1 && *cptJetPack > 0))    //si il a atteri ou si le jet pack est actif alors on peut faire sauter le perso
-                {
-                    perso1->sensyp = -6;
-                    perso1->frameActu = 1;
-                }
-                *a_atteri = 1;
-                *joystiskTouche = 3;
-            }
-            else if (event.jaxis.axis == 1 && event.jaxis.value > 3200)
-            {
-                // Vers le bas
-                perso1->sensyp = 8;
-                *joystiskTouche = 4;
-            }
-            else
-                *joystiskTouche = 0;
         }
+        else if(SDL_JoystickGetAxis(joystick,0) > JOY)
+        {
+            // Vers la droite
+            perso1->ok++;
+            //perso1->frameActu = 1;
+            if(*touche_enfonce == 0)
+                perso1->ok = perso1->vitesseAnim;
+            if(perso1->ok >= perso1->vitesseAnim)
+            {
+                if(perso1->frameActu >= 8)
+                    perso1->frameActu = 1;
+                perso1->ok = 0;
+                perso1->frameActu += 1;
+
+            }
+            perso1->sensxp = perso1->vitesse;   //le perso va vers la droite
+            //carte->posFond.x -=5;
+            perso1->dir = 1;
+            *touche_enfonce = 1;    //sert pour la détection de 2 touches simultanement
+        }
+        else
+        {
+            *touche_enfonce = 0;
+            fprintf(stderr,"%i\n",SDL_JoystickGetAxis(joystick,0));
+        }
+        if(event.jaxis.axis == 1 && SDL_JoystickGetAxis(joystick,1) < -JOY)
+        {
+            // Vers le haut
+            if(*a_atteri == 0 || (*jetPack == 1 && *cptJetPack > 0))    //si il a atteri ou si le jet pack est actif alors on peut faire sauter le perso
+            {
+                perso1->sensyp = -8;
+                perso1->frameActu = 1;
+            }
+            *a_atteri = 1;
+
+        }
+        else if(event.jaxis.axis == 1 && SDL_JoystickGetAxis(joystick,1) > JOY)
+        {
+
+            // Vers le bas
+            perso1->sensyp = 8;
+        }
+        break;
+    case SDL_JOYHATMOTION:  /* Handle Joyball Motion */
+        if ( event.jhat.value & SDL_HAT_UP )
+        {
+            if(*a_atteri == 0 || (*jetPack == 1 && *cptJetPack > 0))    //si il a atteri ou si le jet pack est actif alors on peut faire sauter le perso
+            {
+                perso1->sensyp = -6;
+                perso1->frameActu = 1;
+            }
+            *a_atteri = 1;
+            perso1->dir = 0;
+        }
+        else if ( event.jhat.value & SDL_HAT_DOWN )
+        {
+            perso1->sensyp = 8;
+        }
+        if ( event.jhat.value & SDL_HAT_LEFT )
+        {
+            perso1->sensxp = -perso1->vitesse;      //perso va vers la gauche
+            perso1->ok++;
+            //perso1->frameActu = 9;
+            if(*touche_enfonce == 0)
+                perso1->ok = perso1->vitesseAnim;
+            if(perso1->ok >= perso1->vitesseAnim)
+            {
+                if(perso1->frameActu >= 15 || perso1->frameActu < 8)
+                    perso1->frameActu = 8;
+                perso1->ok = 0;
+                perso1->frameActu += 1;
+            }
+            //carte->posFond.x +=5;
+            /*if(perso1->dir != -1 && strcmp(perso1->imagePerso,"image/perso/persoPara.bmp") != 0)
+            {
+                perso1->point_tab[0].x = 9;
+                perso1->point_tab[0].y = 7;
+                perso1->point_tab[1].x = 48;
+                perso1->point_tab[1].y = 7;
+                perso1->point_tab[2].x = 37;
+                perso1->point_tab[2].y = 55;
+                perso1->point_tab[3].x = 0;
+                perso1->point_tab[3].y = 50;
+                perso1->point_tab[4].x = 1;
+                perso1->point_tab[4].y = 40;
+                perso1->point_tab[5].x = 7;
+                perso1->point_tab[5].y = 25;
+                perso1->point_tab[6].x = 9;
+                perso1->point_tab[6].y = 7;
+            }*/
+            perso1->dir = -1;
+            *touche_enfonce = -1;
+        }
+        else if ( event.jhat.value & SDL_HAT_RIGHT )
+        {
+            perso1->ok++;
+            //perso1->frameActu = 1;
+            if(*touche_enfonce == 0)
+                perso1->ok = perso1->vitesseAnim;
+            if(perso1->ok >= perso1->vitesseAnim)
+            {
+                if(perso1->frameActu >= 8)
+                    perso1->frameActu = 1;
+                perso1->ok = 0;
+                perso1->frameActu += 1;
+
+            }
+            perso1->sensxp = perso1->vitesse;   //le perso va vers la droite
+            //carte->posFond.x -=5;
+            /*if(perso1->dir != 1 && strcmp(perso1->imagePerso,"image/perso/persoPara.bmp") != 0)
+            {
+                perso1->point_tab[0].x = 2;
+                perso1->point_tab[0].y = 11;
+                perso1->point_tab[1].x = 34;
+                perso1->point_tab[1].y = 5;
+                perso1->point_tab[2].x = 48;
+                perso1->point_tab[2].y = 24;
+                perso1->point_tab[3].x = 52;
+                perso1->point_tab[3].y = 56;
+                perso1->point_tab[4].x = 46;
+                perso1->point_tab[4].y = 55;
+                perso1->point_tab[5].x = 29;
+                perso1->point_tab[5].y = 48;
+                perso1->point_tab[6].x = 2;
+                perso1->point_tab[6].y = 11;
+            }*/
+            perso1->dir = 1;
+            *touche_enfonce = 1;    //sert pour la détection de 2 touches simultanement
+        }
+        else
+            *touche_enfonce = 0;
         break;
     default:
         break;

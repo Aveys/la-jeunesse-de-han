@@ -204,7 +204,7 @@ void gestionToucheEditeur(Map *carte, ParamMap *opt, SDL_Surface *ecran,  int *c
         switch (event.type)
         {
         case SDL_QUIT:
-            if(SDLMessageBox((char*)"Voulez vous quitter le jeu ?"))
+            if(SDLMessageBox((char*)"Voulez vous quitter le jeu ?",joystick))
             {
                 TTF_Quit();
                 SDL_Quit();
@@ -390,7 +390,7 @@ void gestionToucheEditeur(Map *carte, ParamMap *opt, SDL_Surface *ecran,  int *c
                 strcat(str, carte->gestNiveau[carte->level].fileName);
                 strcat(str, " ?");
                 SDL_ShowCursor(1);
-                if(SDLMessageBox((char*)str))
+                if(SDLMessageBox((char*)str,joystick))
                 {
                     sauvegardeMap(*carte);
                 }
@@ -536,7 +536,7 @@ void gestionToucheEditeur(Map *carte, ParamMap *opt, SDL_Surface *ecran,  int *c
                 strcat(str, carte->gestNiveau[carte->level].fileName);
                 strcat(str, " ?");
                 SDL_ShowCursor(1);
-                if(SDLMessageBox((char*)str))
+                if(SDLMessageBox((char*)str,joystick))
                 {
                     sauvegardeMap(*carte);
                 }
@@ -583,7 +583,7 @@ void gestionToucheEditeur(Map *carte, ParamMap *opt, SDL_Surface *ecran,  int *c
 }
 //Fonction qui permet d'afficher une boite de dialogue return le numero du bouton appuier
 //Plus d'info : http://msdn.microsoft.com/en-us/library/ms645505%28VS.85%29.aspx
-int SDLMessageBox(char *str)
+int SDLMessageBox(char *str,SDL_Joystick *joystick)
 {
     int continuer = 1,choix = 0,touche_enfonce = 0;
     SDL_Surface *screen = SDL_GetVideoSurface();
@@ -615,7 +615,7 @@ int SDLMessageBox(char *str)
         switch(event.type)
         {
         case SDL_QUIT:
-            if(SDLMessageBox((char*)"Voulez vous quitter le jeu ?"))
+            if(SDLMessageBox((char*)"Voulez vous quitter le jeu ?",joystick))
             {
                 TTF_Quit();
                 SDL_Quit();
@@ -658,6 +658,38 @@ int SDLMessageBox(char *str)
         case SDL_KEYUP:
             if(event.key.keysym.sym == SDLK_RIGHT || event.key.keysym.sym == SDLK_LEFT)
                 touche_enfonce = 0;
+            break;
+        case SDL_JOYHATMOTION:
+            if ( event.jhat.value & SDL_HAT_LEFT )
+            {
+                if(touche_enfonce == 0)
+                {
+                    if(choix)
+                        choix = 0;
+                    else
+                        choix = 1;
+                    touche_enfonce = 1;
+                }
+            }
+            else if ( event.jhat.value & SDL_HAT_RIGHT )
+            {
+                if(touche_enfonce == 0)
+                {
+                    if(choix)
+                        choix = 0;
+                    else
+                        choix = 1;
+                    touche_enfonce = 1;
+                }
+            }
+            else
+                touche_enfonce = 0;
+            break;
+        case SDL_JOYBUTTONDOWN:
+            if (event.jbutton.button == 7 || event.jbutton.button == 1)
+                continuer = 0;
+            if (event.jbutton.button == 6)
+                return 0;
             break;
         }
         if(choix)
