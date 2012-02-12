@@ -2,7 +2,7 @@
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Debug" />
 	<File name="constantes.h" open="1" top="0" tabpos="10">
-		<Cursor position="2011" topLine="66" />
+		<Cursor position="831" topLine="17" />
 	</File>
 	<File name="credits.cpp" open="1" top="0" tabpos="14">
 		<Cursor position="6067" topLine="466" />
@@ -11,22 +11,22 @@
 		<Cursor position="382" topLine="0" />
 	</File>
 	<File name="deplace_mario.cpp" open="1" top="0" tabpos="12">
-		<Cursor position="10599" topLine="207" />
+		<Cursor position="5706" topLine="133" />
 	</File>
 	<File name="deplace_mario.h" open="1" top="0" tabpos="4">
-		<Cursor position="1220" topLine="0" />
+		<Cursor position="309" topLine="0" />
 	</File>
 	<File name="editeur.cpp" open="1" top="0" tabpos="8">
-		<Cursor position="23875" topLine="605" />
+		<Cursor position="26673" topLine="682" />
 	</File>
 	<File name="editeur.h" open="1" top="0" tabpos="1">
-		<Cursor position="277" topLine="0" />
+		<Cursor position="2127" topLine="35" />
 	</File>
 	<File name="ennemie.cpp" open="1" top="0" tabpos="15">
-		<Cursor position="2353" topLine="46" />
+		<Cursor position="6171" topLine="119" />
 	</File>
 	<File name="ennemie.h" open="1" top="0" tabpos="5">
-		<Cursor position="67" topLine="0" />
+		<Cursor position="485" topLine="0" />
 	</File>
 	<File name="highscore.cpp" open="1" top="0" tabpos="11">
 		<Cursor position="2460" topLine="77" />
@@ -35,10 +35,13 @@
 		<Cursor position="236" topLine="23" />
 	</File>
 	<File name="jeu.cpp" open="1" top="1" tabpos="6">
-		<Cursor position="11793" topLine="288" />
+		<Cursor position="22030" topLine="601" />
+	</File>
+	<File name="jeu.h" open="1" top="0" tabpos="16">
+		<Cursor position="514" topLine="0" />
 	</File>
 	<File name="main.cpp" open="1" top="0" tabpos="7">
-		<Cursor position="3410" topLine="80" />
+		<Cursor position="3270" topLine="74" />
 	</File>
 	<File name="map.cpp" open="1" top="0" tabpos="9">
 		<Cursor position="16536" topLine="435" />
@@ -47,7 +50,7 @@
 		<Cursor position="105" topLine="0" />
 	</File>
 	<File name="menu.cpp" open="1" top="0" tabpos="3">
-		<Cursor position="4870" topLine="136" />
+		<Cursor position="4006" topLine="128" />
 	</File>
 	<File name="menu.h" open="0" top="0" tabpos="5">
 		<Cursor position="2708" topLine="0" />

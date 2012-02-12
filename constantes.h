@@ -23,7 +23,7 @@
 #define     bandeJeuHaut        70
 #define     bandeJeuBas         0
 
-#define     FRAMERATE   5 //50 fps
+#define     FRAMERATE   20 //50 fps
 #define     FRAMERATE_BALLE 100
 #define     LTILE   32
 #define     HTILE   32
@@ -32,6 +32,7 @@
 #define     HENNEMIE       56
 #define     LENNEMIE       23
 #define     NB_PT           6
+#define     JOY            3200
 
 //DEBUG
 #define     debugOutputMap      1

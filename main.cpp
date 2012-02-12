@@ -83,7 +83,6 @@ int main ( int argc, char** argv )
     SDL_JoystickEventState(SDL_ENABLE);
     joystick = SDL_JoystickOpen(0);
 
-
     //on appelle le menu.
     if(menu(screen,joystick) != 0)
     {

@@ -112,111 +112,109 @@ int menu(SDL_Surface *ecran,SDL_Joystick *joystick)
         SDL_Flip(ecran);
 
         //on vérifie si un évènement a eu lieu
-        SDL_PollEvent(&event);
-        // on vérifie l'évènement
-
-        if(SDL_NumJoysticks() > 0)
+        event.jbutton.button = 0;
+        if(SDL_PollEvent(&event))
         {
-            if (event.jaxis.axis == 0 && event.jaxis.value < -3200)
+            // on vérifie l'évènement
+            switch (event.type)
             {
-                // Vers la gauche
-                done = true;
-            }
-            else if (event.jaxis.axis == 0 && event.jaxis.value > 3200)
-            {
-                // Vers la droite
-                if(bActif!=1)
-                {
-                    FMOD_System_GetMasterChannelGroup(system, &canal);
-                    FMOD_ChannelGroup_Stop(canal);
-                }
-                //si lanceprogramme retourne true (quitter) on sort de la boucle
-                if(lanceProgramme(bActif, ecran,&carteJeu, options,joystick))
-                    done = true;
-                else
-                    event.type = 0;
-                if(bActif!=1)
-                    FMOD_System_PlaySound(system, FMOD_CHANNEL_FREE,musique, 0, NULL);
-            }
-            else if (event.jaxis.axis == 1 && event.jaxis.value < -3200)
-            {
-                // Vers le haut
-                if(bActif > 0)
-                    bActif--;
-                else
-                    bActif = 5;
-            }
-            else if (event.jaxis.axis == 1 && event.jaxis.value > 3200)
-            {
-                // Vers le bas
-                if(bActif < 5)
-                    bActif++;
-                else
-                    bActif = 0;
-            }
-        }
-        switch (event.type)
-        {
-            // on quitte si l'utilisateur tente de fermer la fenetre
-        case SDL_QUIT:
-            done = true;
-            break;
-            //sinon selon la touche enfoncée
-        case SDL_KEYDOWN:
-            // on quitte si l'utilisateur clique sur echap
-            switch(event.key.keysym.sym)
-            {
-            case SDLK_ESCAPE:
+                // on quitte si l'utilisateur tente de fermer la fenetre
+            case SDL_QUIT:
                 done = true;
                 break;
-                //si on appuie sur la touche du haut on décrémente l'indice du menu ou on le replace en bas
-            case SDLK_UP:
-                if(touche_enfonce == 0)
+                //sinon selon la touche enfoncée
+            case SDL_JOYBUTTONDOWN:
+                if (event.jbutton.button == 6)
                 {
+                    // Vers la gauche
+                    done = true;
+                }
+                else if (event.jbutton.button == 7 || event.jbutton.button == 1)
+                {
+                    // Vers la droite
+                    if(bActif!=1)
+                    {
+                        FMOD_System_GetMasterChannelGroup(system, &canal);
+                        FMOD_ChannelGroup_Stop(canal);
+                    }
+                    //si lance programme retourne true (quitter) on sort de la boucle
+                    if(lanceProgramme(bActif, ecran,&carteJeu, options,joystick))
+                        done = true;
+                    if(bActif!=1)
+                        FMOD_System_PlaySound(system, FMOD_CHANNEL_FREE,musique, 0, NULL);
+                }
+                break;
+            case SDL_JOYAXISMOTION:
+                if (event.jaxis.axis == 1 && event.jaxis.value < -3200)
+                {
+                    // Vers le haut
                     if(bActif > 0)
                         bActif--;
                     else
                         bActif = 5;
-                    touche_enfonce = 1;
                 }
-                break;
-                //si on appuie sur la touche du bas on incrémente l'indice du menu ou le replace en haut
-            case SDLK_DOWN:
-                if(touche_enfonce == 0)
+                else if (event.jaxis.axis == 1 && event.jaxis.value > 3200)
                 {
+                    // Vers le bas
                     if(bActif < 5)
                         bActif++;
                     else
                         bActif = 0;
-                    touche_enfonce = 1;
                 }
                 break;
-                //si on appuie sur entrée
-            case SDLK_RETURN:
-                if(bActif!=1)
+            case SDL_KEYDOWN:
+                // on quitte si l'utilisateur clique sur echap
+                switch(event.key.keysym.sym)
                 {
-                    FMOD_System_GetMasterChannelGroup(system, &canal);
-                    FMOD_ChannelGroup_Stop(canal);
-                }
-                //si lanceprogramme retourne true (quitter) on sort de la boucle
-                if(lanceProgramme(bActif, ecran,&carteJeu, options,joystick))
+                case SDLK_ESCAPE:
                     done = true;
-                else
-                    event.type = 0;
-                if(bActif!=1)
-                    FMOD_System_PlaySound(system, FMOD_CHANNEL_FREE,musique, 0, NULL);
+                    break;
+                    //si on appuie sur la touche du haut on décrémente l'indice du menu ou on le replace en bas
+                case SDLK_UP:
+                    if(touche_enfonce == 0)
+                    {
+                        if(bActif > 0)
+                            bActif--;
+                        else
+                            bActif = 5;
+                        touche_enfonce = 1;
+                    }
+                    break;
+                    //si on appuie sur la touche du bas on incrémente l'indice du menu ou le replace en haut
+                case SDLK_DOWN:
+                    if(touche_enfonce == 0)
+                    {
+                        if(bActif < 5)
+                            bActif++;
+                        else
+                            bActif = 0;
+                        touche_enfonce = 1;
+                    }
+                    break;
+                    //si on appuie sur entrée
+                case SDLK_RETURN:
+                    if(bActif!=1)
+                    {
+                        FMOD_System_GetMasterChannelGroup(system, &canal);
+                        FMOD_ChannelGroup_Stop(canal);
+                    }
+                    //si lanceprogramme retourne true (quitter) on sort de la boucle
+                    if(lanceProgramme(bActif, ecran,&carteJeu, options,joystick))
+                        done = true;
+                    if(bActif!=1)
+                        FMOD_System_PlaySound(system, FMOD_CHANNEL_FREE,musique, 0, NULL);
 
+                    break;
+                default:
+                    break;
+                }
                 break;
-            default:
+            case SDL_KEYUP:
+                if(event.key.keysym.sym == SDLK_UP || event.key.keysym.sym == SDLK_DOWN)
+                    touche_enfonce = 0;
                 break;
-            }
-            break;
-        case SDL_KEYUP:
-            if(event.key.keysym.sym == SDLK_UP || event.key.keysym.sym == SDLK_DOWN)
-                touche_enfonce = 0;
-            break;
-        } // fin switch
-
+            } // fin switch
+        }
     } // fin du while principale
     FMOD_System_PlaySound(system, FMOD_CHANNEL_FREE,musique, 0, NULL);
     FMOD_Sound_Release(musique);
